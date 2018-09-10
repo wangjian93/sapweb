@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ivo.sapweb.system.dao.LoginRecordMapper">
+
+    <select id="listFull" resultType="com.ivo.sapweb.system.model.LoginRecord">
+        SELECT a.*,b.nick_name,b.username
+        FROM sys_login_record a
+        left join sys_user b on a.user_id=b.user_id
+        <where>
+            <if test="startDate != null">
+                AND a.create_time&gt;=#{startDate}
+            </if>
+            <if test="endDate != null">
+                AND a.create_time&lt;=#{endDate}
+            </if>
+            <if test="account != null">
+                AND b.username=#{account}
+            </if>
+        </where>
+        ORDER BY a.create_time DESC
+    </select>
+</mapper>

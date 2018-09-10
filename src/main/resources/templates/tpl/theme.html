@@ -1,0 +1,43 @@
+<div class="layui-card-header">
+    <h2 class="header-title">多标签：</h2>
+    <div class="pull-right layui-form">
+        <input type="checkbox" lay-skin="switch" lay-text="ON|OFF" id="set-tab" lay-filter="set-tab" checked/>
+    </div>
+</div>
+
+<div class="layui-card-header"><h2 class="header-title">设置主题：</h2></div>
+<div class="layui-card-body layui-text">
+    <a href="/home/setTheme" class="layui-btn" style="background-color: #009688;">默认主题</a>
+    <a href="/home/setTheme?themeName=blue" class="layui-btn layui-btn-normal">蓝色主题</a>
+    <br><br><br>
+    <p>&emsp;&emsp;此版本为前后端不分离的iframe版本，前后端分离版本演示地址：<a href="https://whvse.gitee.io/easywebpage/login.html" target="_blank">https://whvse.gitee.io/easywebpage/</a>
+    </p>
+    <br><br>
+    <p>前端开发文档地址：<a href="https://whvse.gitee.io/easywebpage/docs/" target="_blank">https://whvse.gitee.io/easywebpage/docs/</a></p>
+    <br><br>
+    <p>使用<a href="https://whvse.gitee.io/easywebpage/docs/generater_theme.html" target="_blank">EasyWeb主题生成器</a>生成你的个性化主题。
+    </p>
+</div>
+
+<script>
+    layui.use(['form', 'index', 'admin'], function () {
+        var form = layui.form;
+        var index = layui.index;
+        var admin = layui.admin;
+
+        $('#set-tab').prop('checked', index.pageTabs);
+        form.render('checkbox');
+
+        form.on('switch(set-tab)', function (data) {
+            if (data.elem.checked) {
+                location.reload();
+            } else {
+                index.pageTabs = false;
+                index.checkPageTabs();
+                admin.refresh();
+                admin.closePopupRight();
+            }
+        });
+
+    });
+</script>

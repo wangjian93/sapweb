@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="side">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" style="margin-top: 15px;">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-home"></i>&emsp;<cite>主页</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd class="layui-this">
+                            <a lay-href="home/console">控制台</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item" th:each="menu : ${menus}">
+                    <a lay-href="" th:attr="lay-href=${menu.menuUrl}">
+                        <i class="layui-icon" th:classappend="${menu.menuIcon}"></i>&emsp;
+                        <cite th:text="${menu.menuName}"></cite>
+                    </a>
+
+                    <dl class="layui-nav-child" th:if="${menu.subMenus.size() > 0}">
+                        <dd th:each="subMenu : ${menu.subMenus}">
+                            <a lay-href="" th:attr="lay-href=${subMenu.menuUrl}"
+                               th:text="${subMenu.menuName}">
+
+                            </a>
+                            <dl class="layui-nav-child" th:if="${subMenu.subMenus.size() > 0}">
+                                <dd th:each="temp : ${subMenu.subMenus}">
+                                    <a lay-href="" th:attr="lay-href=${temp.menuUrl}" th:text="${temp.menuName}" ></a>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-senior"></i>&emsp;<cite>定时器管理</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="quartz/job">任务监控</a></dd>
+                        <dd><a lay-href="quartz/cron">cron生成器</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-senior"></i>&emsp;<cite>系统监控</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="iframe?url=druid">Druid监控</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+</html>

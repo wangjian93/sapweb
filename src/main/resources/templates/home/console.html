@@ -1,0 +1,392 @@
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-xs6 layui-col-md3">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                在线人数<span class="layui-badge layui-bg-blue pull-right">当前</span>
+            </div>
+            <div class="layui-card-body">
+                <p class="lay-big-font" th:text="${activeSessions}"></p>
+                <p>总访问量<span class="pull-right"><span th:text="${count}"></span> <i class="layui-icon layui-icon-flag"></i></span></p>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-xs6 layui-col-md3">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                已使用内存<span class="layui-badge layui-bg-black pull-right">内存</span>
+            </div>
+            <div class="layui-card-body">
+                <p class="lay-big-font" th:text="${usedMemory}"></p>
+                <p>总内存<span class="pull-right"><span th:text="${maxMemory}"></span> <i class="layui-icon layui-icon-download-circle"></i></span></p>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-xs6 layui-col-md3">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                活跃连接数<span class="layui-badge layui-bg-green pull-right">连接池</span>
+            </div>
+            <div class="layui-card-body">
+                <p class="lay-big-font" th:text="${activeCount}"></p>
+                <p>池中连接数<span class="pull-right"><span th:text="${poolingCount}"></span> <i class="layui-icon layui-icon-rate"></i></span></p>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-xs6 layui-col-md3">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                任务执行数量<span class="layui-badge layui-bg-orange pull-right">定时任务</span>
+            </div>
+            <div class="layui-card-body">
+                <p class="lay-big-font" th:text="${numberOfJobsExecuted}"></p>
+                <p>线程池数量<span class="pull-right"><span th:text="${threadPoolSize}"></span> <i class="layui-icon layui-icon-user"></i></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-lg8 layui-col-md7">
+        <div class="layui-card">
+            <div class="layui-card-header">SAPJCO3 安装</div>
+            <div class="layui-card-body">
+                <HR>
+                <CENTER>
+                    <h1>SAP Java Connector 3.0</h1>
+                </CENTER>
+                </TD>
+                </TR>
+
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>
+                    The SAP Java Connector (JCo) 3.0 requires a Java Runtime Environment (JRE) version 1.5, 1.6 or 1.7.<br>
+                    Please see SAP note <a href="https://service.sap.com/sap/support/notes/1077727">1077727</a> for
+                    a current and detailed list of supported platforms and Java runtime environments.
+                    The latest version of the SAP Java Connector can be downloaded from the SAP Service Marketplace at
+                    <a href="https://service.sap.com/connectors">https://service.sap.com/connectors</a>. There you will
+                    also find all available distribution packages for the various supported platforms and processors as
+                    well as the JCo 3.0 Documenation and the JCo 2.x-3.0 Migration Guide as PDF files.
+                </td></tr>
+
+
+                <tr><td>&nbsp;</td></tr>
+                <tr BGCOLOR="#CCCCFF" CLASS="TableHeadingColor"><td>
+                    <b>Microsoft Windows</b>
+                </td></tr>
+
+                <tr><td>
+                    There are different distribution packages for various JRE versions and hardware processors available:
+                    <ul>
+                        <li><code>sapjco3-ntintel-3.0.11.zip</code> for a 32-bit JRE running on a 32- or 64-bit AMD or INTEL x86 or a
+                            64-bit INTEL Itanium processor
+                        <li><code>sapjco3-ntia64-3.0.11.zip</code> for a 64-bit JRE running on a 64-bit INTEL Itanium processor
+                        <li><code>sapjco3-ntamd64-3.0.11.zip</code> for a 64-bit JRE running on a 64-bit AMD or INTEL x86 processor
+                    </ul>
+                    <i>Note:</i> Before installing JCo, please install the latest Microsoft Visual Studio 2005 C/C++ runtime libraries
+                    as described in note <a href="https://service.sap.com/sap/support/notes/684106">684106</a>.<p>
+                    <p>
+                        To install JCo for Windows unzip the appropriate distribution package into an arbitrary directory
+                        {sapjco3-install-path}.<br>
+                    <p>
+                        <i>Note:</i> Do not copy the <code>sapjco3.dll</code> neither into the <code>{windows-dir}\system32</code>
+                        nor into the <code>{windows-dir}\SysWOW64</code> directory. This will break the operability of other JCo versions
+                        that are already installed on the same system. Furthermore you would risk that the current installation also would
+                        not work anymore, if the <code>sapjco3.dll</code> gets replaced in the respective Windows system directory in the
+                        future.
+                    <p>
+                        Then add <code>{sapjco3-install-path}</code> to the <code>PATH</code> environment variable.<br>
+                        Finally, add <code>{sapjco3-install-path}\sapjco3.jar</code> to your <code>CLASSPATH</code> environment variable.
+                </td></tr>
+
+
+                <tr><td>&nbsp;</td></tr>
+                <tr BGCOLOR="#CCCCFF" CLASS="TableHeadingColor"><td>
+                    <b>Linux</b>
+                </td></tr>
+
+                <tr><td>
+                    There are different distribution packages for various JRE versions and hardware processors available:
+                    <ul>
+                        <li><code>sapjco3-linuxintel-3.0.11.tgz</code> for a 32-bit JRE running on a 32- or 64-bit AMD or INTEL x86 processor
+                        <li><code>sapjco3-linuxia64-3.0.11.tgz</code> for a 64-bit JRE running on a 64-bit INTEL Itanium processor
+                        <li><code>sapjco3-linuxx86_64-3.0.11.tgz</code> for a 64-bit JRE running on a 64-bit AMD or INTEL x86 processor
+                        <li><code>sapjco3-linuxppc64-3.0.11.tgz</code> for a 64-bit JRE running on a 64-bit PowerPC processor
+                        <li><code>sapjco3-linuxs390x-3.0.11.tgz</code> for a 64-bit JRE running on a 64-bit IBM eServer zSeries processor
+                    </ul>
+                    To install JCo for Linux copy the appropriate distribution package into an arbitrary directory
+                    <code>{sapjco3-install-path}</code>. Next, change to the installation directory:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;cd {sapjco3-install-path}&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    and extract the archive:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;tar zxvf sapjco3-linux*3.0.11.tgz&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    Then add <code>{sapjco3-install-path}</code> to the <code>LD_LIBRARY_PATH</code> environment variable.<br>
+                    Finally, add <code>{sapjco3-install-path}/sapjco3.jar</code> to your <code>CLASSPATH</code> environment variable.
+                </td></tr>
+
+
+                <tr><td>&nbsp;</td></tr>
+                <tr BGCOLOR="#CCCCFF" CLASS="TableHeadingColor"><td>
+                    <b>IBM AIX</b>
+                </td></tr>
+
+                <tr><td>
+                    The following distribution package is available:
+                    <ul>
+                        <li><code>sapjco3-rs6000_64-3.0.11.tgz</code> for a 64-bit JRE running on a 64-bit IBM RS/6000 processor
+                    </ul>
+                    To install JCo for IBM AIX copy the appropriate distribution package into an arbitrary directory
+                    <code>{sapjco3-install-path}</code>. Next, change to the installation directory:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;cd {sapjco3-install-path}&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    and extract the archive:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;gunzip sapjco3-rs6000*3.0.11.tgz&nbsp;&nbsp;&nbsp;</code><i>[return]</i><br>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;tar xvf sapjco3-rs6000*3.0.11.tar&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    Then add <code>{sapjco3-install-path}</code> to the <code>LIBPATH</code> environment variable.<br>
+                    Finally, add <code>{sapjco3-install-path}/sapjco3.jar</code> to your <code>CLASSPATH</code> environment variable.
+                </td></tr>
+
+
+                <tr><td>&nbsp;</td></tr>
+                <tr BGCOLOR="#CCCCFF" CLASS="TableHeadingColor"><td>
+                    <b>IBM i</b>
+                </td></tr>
+
+                <tr><td>
+                    The following distribution package is available:
+                    <ul>
+                        <li><code>sapjco3-as400_pase_64-3.0.11.tar</code> for a 64-bit JRE running on a 64-bit IBM i system
+                    </ul>
+                    To install JCo for IBM i copy the appropriate distribution package into an arbitrary directory
+                    <code>{sapjco3-install-path}</code>. Next, open a QP2TERM session and change to the installation directory:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;cd {sapjco3-install-path}&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    and extract the archive:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;tar -xvf sapjco3-as400_pase_64-3.0.11.tar&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    Then add some environment variables as described in note <a href="https://service.sap.com/sap/support/notes/1269638">1269638</a>
+                    according to the used JVM.<br>
+                    Finally, add <code>{sapjco3-install-path}/sapjco3.jar</code> to your <code>CLASSPATH</code> environment variable.
+                </td></tr>
+
+
+                <tr><td>&nbsp;</td></tr>
+                <tr BGCOLOR="#CCCCFF" CLASS="TableHeadingColor"><td>
+                    <b>IBM z/OS</b>
+                </td></tr>
+
+                <tr><td>
+                    The following distribution package is available:
+                    <ul>
+                        <li><code>sapjco3-os390_64-3.0.11.tgz</code> for a 64-bit JRE running on a 64-bit PPC processor
+                    </ul>
+                    To install JCo for IBM z/OS copy the appropriate distribution package into an arbitrary directory
+                    <code>{sapjco3-install-path}</code>. Next, change to the installation directory:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;cd {sapjco3-install-path}&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    and extract the archive:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;gunzip sapjco3-os390*3.0.11.tgz&nbsp;&nbsp;&nbsp;</code><i>[return]</i><br>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;tar xvf sapjco3-os390*3.0.11.tar&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    Finally, add <code>{sapjco3-install-path}/sapjco3.jar</code> to your <code>CLASSPATH</code> environment variable.
+                    <p>After the installation you should tag all examples and documentation files being ASCII: <br>
+                        Change to the examples directory and execute<br>
+                        <code>&nbsp;&nbsp;&nbsp;&nbsp;chtag -tc ISO8859-1 *.java&nbsp;&nbsp;&nbsp;</code><i>[return]</i><br>
+                        Change to the docs directory and execute<br>
+                        <code>&nbsp;&nbsp;&nbsp;&nbsp;chtag -R -tc ISO8859-1 *.html&nbsp;&nbsp;&nbsp;</code><i>[return]</i><br>
+                </td></tr>
+
+
+                <tr><td>&nbsp;</td></tr>
+                <tr BGCOLOR="#CCCCFF" CLASS="TableHeadingColor"><td>
+                    <b>HP-UX</b>
+                </td></tr>
+
+                <tr><td>
+                    There are different distribution packages for various hardware processors available:
+                    <ul>
+                        <li><code>sapjco3-hp_64-3.0.11.tgz</code> for a 64-bit JRE running on a 64-bit PA-RISC processor
+                        <li><code>sapjco3-hpia64-3.0.11.tgz</code> for a 64-bit JRE running on a 64-bit INTEL Itanium processor
+                    </ul>
+                    To install JCo for HP copy the appropriate distribution package into an arbitrary directory
+                    <code>{sapjco3-install-path}</code>. Next, change to the installation directory:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;cd {sapjco3-install-path}&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    and extract the archive:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;gunzip sapjco3-hp*3.0.11.tgz&nbsp;&nbsp;&nbsp;</code><i>[return]</i><br>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;tar xvf sapjco3-hp*3.0.11.tar&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    Then add <code>{sapjco3-install-path}</code> to the <code>SHLIB_PATH</code> environment variable.<br>
+                    Finally, add <code>{sapjco3-install-path}/sapjco3.jar</code> to your <code>CLASSPATH</code> environment variable.
+                </td></tr>
+
+
+                <tr><td>&nbsp;</td></tr>
+                <tr BGCOLOR="#CCCCFF" CLASS="TableHeadingColor"><td>
+                    <b>Oracle Solaris (Sun OS)</b>
+                </td></tr>
+
+                <tr><td>
+                    There are different distribution packages for various hardware processors available:
+                    <ul>
+                        <li><code>sapjco3-sun_64-3.0.11.tgz</code> for a 64-bit JRE running on a 64-bit SUN SPARC processor
+                        <li><code>sapjco3-sunx86_64-3.0.11.tgz</code> for a 64-bit JRE running on a 64-bit AMD or INTEL x86 processor
+                    </ul>
+                    To install JCo for SUN Solaris copy the appropriate distribution package into an arbitrary directory
+                    <code>{sapjco3-install-path}</code>. Next, change to the installation directory:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;cd {sapjco3-install-path}&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    and extract the archive:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;gunzip sapjco3-sun*3.0.11.tgz&nbsp;&nbsp;&nbsp;</code><i>[return]</i><br>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;tar xvf sapjco3-sun*3.0.11.tar&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    Then add <code>{sapjco3-install-path}</code> to the <code>LD_LIBRARY_PATH</code> environment variable.<br>
+                    Finally, add <code>{sapjco3-install-path}/sapjco3.jar</code> to your <code>CLASSPATH</code> environment variable.
+                </td></tr>
+
+
+                <tr><td>&nbsp;</td></tr>
+                <tr BGCOLOR="#CCCCFF" CLASS="TableHeadingColor"><td>
+                    <b>Apple Mac OS X</b>
+                </td></tr>
+
+                <tr><td>
+                    There are different distribution packages for various JRE versions and hardware processors available:
+                    <ul>
+                        <li><code>sapjco3-darwinintel-3.0.11.zip</code> for a 32-bit JRE running on a 32- or 64-bit AMD or
+                            INTEL x86 processor
+                        <li><code>sapjco3-darwinintel64-3.0.11.zip</code> for a 64-bit JRE running on a 64-bit AMD or INTEL x86 processor
+                    </ul>
+                    To install JCo for Apple Mac copy the appropriate distribution package into an arbitrary directory
+                    <code>{sapjco3-install-path}</code>. Next, change to the installation directory:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;cd {sapjco3-install-path}&nbsp;&nbsp;&nbsp;</code><i>[return]</i><p>
+                    and extract the archive:<p>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;unzip sapjco3-darwin*3.0.11.zip&nbsp;&nbsp;&nbsp;</code><i>[return]</i><br>
+                    Then add <code>{sapjco3-install-path}</code> to the <code>DYLD_LIBRARY_PATH</code> environment variable.<br>
+                    Finally, add <code>{sapjco3-install-path}/sapjco3.jar</code> to your <code>CLASSPATH</code> environment variable.
+                </td></tr>
+
+                <TR>
+                    <TD>
+                        <hr>
+                    </TD>
+                </TR>
+                <TR>
+                    <TD>
+                        <i>Copyright &#169; 2008-2014 SAP AG. All Rights Reserved.</i>
+                    </TD>
+                </TR>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-col-lg4 layui-col-md5">
+        <div class="layui-card">
+            <div class="layui-card-header">后台框架</div>
+            <div class="layui-card-body">
+                <table class="layui-table layui-text">
+                    <colgroup>
+                        <col width="100">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td>核心框架</td>
+                            <td>Spring、Spring MVC、Spring Boot</td>
+                        </tr>
+                        <tr>
+                            <td>持久层</td>
+                            <td>MyBatis、Druid、<a href="http://mp.baomidou.com" target="_blank">MyBatis-Plus</a></td>
+                        </tr>
+                        <tr>
+                            <td>权限框架</td>
+                            <td>Spring Security、OAuth2.0</td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<td>Star Fork</td>-->
+                            <!--<td style="padding-bottom: 3px;">-->
+                                <!--<iframe src="http://ghbtns.com/github-btn.html?user=whvcse&amp;repo=easyweb&amp;type=watch&amp;count=true&amp;size=medium"-->
+                                        <!--allowtransparency="true" frameborder="0" scrolling="0" width="100px"-->
+                                        <!--height="20px"></iframe>-->
+                                <!--<iframe src="http://ghbtns.com/github-btn.html?user=whvcse&amp;repo=easyweb&amp;type=fork&amp;count=true&amp;size=medium"-->
+                                        <!--allowtransparency="true" frameborder="0" scrolling="0" width="100px"-->
+                                        <!--height="20px"></iframe>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="layui-card">
+            <div class="layui-card-header">前端框架</div>
+            <div class="layui-card-body">
+                <table class="layui-table layui-text">
+                    <colgroup>
+                        <col width="100">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td>核心框架</td>
+                            <td><a href="http://www.layui.com/" target="_blank">layui-v2.3.0</a></td>
+                        </tr>
+                        <tr>
+                            <td>路由框架</td>
+                            <td><a href="https://github.com/itorr/q.js" target="_blank">q.js</a>（纯js轻量级路由框架）</td>
+                        </tr>
+                        <tr>
+                            <td>mvvm框架</td>
+                            <td><a href="https://gitee.com/pandarrr/pandyle" target="_blank">pandyle.js</a>（专为jquery编写的mvvm库）
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>主要特色</td>
+                            <td>单页面 / 响应式 / 简约 / 极易上手</td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<td>获取源码</td>-->
+                            <!--<td style="padding-bottom: 0">-->
+                                <!--<div class="layui-btn-container">-->
+                                    <!--<a href="https://gitee.com/whvse/EasyWeb" target="_blank"-->
+                                       <!--class="layui-btn layui-btn-danger">后台代码</a>-->
+                                    <!--<a href="https://gitee.com/whvse/EasyWebPage" target="_blank" class="layui-btn">前端页面</a>-->
+                                <!--</div>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!--<div class="layui-card">-->
+            <!--<div class="layui-card-header">友情链接</div>-->
+            <!--<div class="layui-card-body">-->
+                <!--<div class="layui-carousel admin-carousel admin-news">-->
+                    <!--<div carousel-item>-->
+                        <!--<div>-->
+                            <!--<a href="http://www.layui.com/" target="_blank" class="layui-bg-green">layui - 经典模块化前端框架</a>-->
+                        <!--</div>-->
+                        <!--<div>-->
+                            <!--<a href="http://www.layui.com/admin/" target="_blank" class="layui-bg-cyan">layuiAdmin - -->
+                                <!--layui官方后台模板</a>-->
+                        <!--</div>-->
+                        <!--<div>-->
+                            <!--<a href="http://fly.layui.com/case/2018/" target="_blank" class="layui-bg-blue">发现layui年度最佳案例</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+
+<script>
+    layui.use(['carousel', 'element'], function () {
+        var carousel = layui.carousel;
+        var element = layui.element;
+        var device = layui.device;
+
+        layui.link('assets/css/console.css');
+
+        // 渲染轮播
+        carousel.render({
+            elem: '.layui-carousel',
+            width: '100%',
+            height: '60px',
+            arrow: 'none',
+            autoplay: true,
+            trigger: device.ios || device.android ? 'click' : 'hover',
+            anim: 'fade'
+        });
+    });
+</script>

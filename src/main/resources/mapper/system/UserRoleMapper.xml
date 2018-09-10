@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ivo.sapweb.system.dao.UserRoleMapper">
+
+    <select id="selectByUserIds" resultType="com.ivo.sapweb.system.model.UserRole">
+        SELECT a.*,b.role_name FROM sys_user_role a
+        LEFT JOIN sys_role b ON a.role_id=b.role_id
+        WHERE a.user_id IN
+        <foreach collection="userIds" open="(" close=")" separator="," item="userId">
+            #{userId}
+        </foreach>
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO sys_user_role(user_id,role_id,create_time) VALUES
+        <foreach collection="roleIds" item="roleId" separator=",">
+            (#{userId},#{roleId},SYSDATE())
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<iframe th:src="@{${url}}" frameborder="0" class="admin-iframe"></iframe>
+<script>
+    // 以下代码是去掉主体部分的滚动条，因为iframe自带滚动条
+    initIFrame($('.admin-iframe'));
+
+    function initIFrame(d) {
+        var $parent = d.parent();
+        if ($parent.hasClass('layui-body')) {
+            $parent.addClass('admin-iframe-body');
+            return;
+        }
+        if ($parent.hasClass('layui-tab-item')) {
+            $parent.css({'padding': '0', 'overflow-y': 'hidden'});
+        } else {
+            $parent.css({'width': '100%', 'height': '100%'});
+            initIFrame($parent);
+        }
+    }
+
+</script>
+</html>

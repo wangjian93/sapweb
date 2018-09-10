@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>角色权限管理</title>
+    <% include("../layout/cssPart.html"){} %>
+    <% include("../layout/jsPart.html"){} %>
+    <style>
+        .layui-fluid {
+            padding: 0;
+        }
+
+        .layui-table, .layui-table-view {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body class="layui-fluid">
+<input type="hidden" id="mRoleId" value="${roleId}"/>
+<table class="layui-table" id="role-auth-table" lay-filter="role-auth-table"></table>
+</div>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="auth-state">
+    <input type="checkbox" lay-filter="auth-state" value="{{d.authorityId}}" lay-skin="switch" lay-text="ON|OFF"
+           {{d.checked==1?'checked':''}}/>
+</script>
+
+<script>
+    layui.use(['form', 'table', 'util'], function () {
+        var form = layui.form;
+        var table = layui.table;
+        var layer = layui.layer;
+        var util = layui.util;
+
+        // 渲染表格
+        table.render({
+            elem: '#role-auth-table',
+            url: '../authorities/list',
+            where: {roleId: $('#mRoleId').val()},
+            page: false,
+            cols: [
+                [
+                    {field: 'authorityId', title: 'id'},
+                    {field: 'authorityName', title: '权限名称'},
+                    {field: 'authority', title: '权限标识'},
+                    {field: 'checked', width: 90, templet: '#auth-state', title: '授权'}
+                ]
+            ]
+        });
+
+        // 监听状态开关操作
+        form.on('switch(auth-state)', function (obj) {
+            var roleId = $('#mRoleId').val();
+            layer.load(2);
+            var url = '../authorities/' + (obj.elem.checked ? 'addRoleAuth' : 'deleteRoleAuth');
+            $.post(url, {
+                roleId: roleId,
+                authId: obj.value
+            }, function (data) {
+                layer.closeAll('loading');
+                if (data.code == 200) {
+                    layer.msg(data.msg, {icon: 1});
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                    $(obj.elem).prop('checked', !obj.elem.checked);
+                    form.render('checkbox');
+                }
+            });
+        });
+    });
+
+</script>
+
+</body>
+</html>
