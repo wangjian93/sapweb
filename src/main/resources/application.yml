@@ -9,7 +9,7 @@ spring:
 
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://host.docker.internal:3306/aab?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://host.docker.internal:3306/sapweb?useUnicode=true&characterEncoding=utf8
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
