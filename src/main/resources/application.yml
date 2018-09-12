@@ -9,9 +9,9 @@ spring:
 
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://10.20.2.9:3306/aab?useUnicode=true&characterEncoding=utf8
-    username: test
-    password: test
+    url: jdbc:mysql://host.docker.internal:3306/aab?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
     driver-class-name: com.mysql.jdbc.Driver
     # 配置获取连接等待超时的时间
     maxWait: 60000
