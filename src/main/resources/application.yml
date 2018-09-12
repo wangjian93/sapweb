@@ -9,9 +9,9 @@ spring:
 
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://localhost:3306/sapweb?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: root
+    url: jdbc:mysql://10.20.2.9:3306/sapweb?useUnicode=true&characterEncoding=utf8
+    username: test
+    password: test
     driver-class-name: com.mysql.jdbc.Driver
     # 配置获取连接等待超时的时间
     maxWait: 60000
@@ -32,6 +32,10 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     # 合并多个DruidDataSource的监控数据
     useGlobalDataSourceStat: true
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*Mapper.xml
