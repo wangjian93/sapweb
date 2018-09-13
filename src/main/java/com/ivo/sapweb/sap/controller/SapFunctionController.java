@@ -5,13 +5,10 @@ import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.ivo.sapweb.common.JsonResult;
 import com.ivo.sapweb.common.PageResult;
-import com.ivo.sapweb.common.util.JSONUtil;
 import com.ivo.sapweb.common.util.StringUtil;
 import com.ivo.sapweb.sap.core.BapiCaller;
 import com.ivo.sapweb.sap.model.SapFunction;
-import com.ivo.sapweb.sap.service.SapFunctionService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.junit.Test;
+import com.ivo.sapweb.sap.service.impl.SapFunctionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +31,7 @@ import java.util.Map;
 public class SapFunctionController {
 
     @Autowired
-    private SapFunctionService sapFunctionService;
+    private SapFunctionServiceImpl sapFunctionService;
 
     @Autowired
     private BapiCaller bapiCaller;

@@ -51,20 +51,25 @@ public class SapCallerDefault implements SapCaller  {
             JCoListMetaData importParams = function.getImportParameterList();
             JCoListMetaData exportParams = function.getExportParameterList();
             JCoListMetaData tablesParams = function.getTableParameterList();
+
             if(importParams != null) {
-                map.put("import", parseMetaData(importParams));
+                map.put("import", parseJCoListMetaData(importParams));
             }
             if(exportParams != null) {
-                map.put("export", parseMetaData(exportParams));
+                map.put("export", parseJCoListMetaData(exportParams));
             }
             if(tablesParams != null) {
-                map.put("tables", parseMetaData(tablesParams));
+                map.put("tables", parseJCoListMetaData(tablesParams));
             }
         } catch(JCoException e) {
             e.printStackTrace();
         }
 
+        JCoTable jCoTable;
+
+
         return map;
+
     }
 
     /**
@@ -332,11 +337,77 @@ public class SapCallerDefault implements SapCaller  {
         }
     }
 
+    public List parseJCoListMetaData(JCoListMetaData jCoListMetaData) {
+        if(jCoListMetaData == null) {
+            return null;
+        }
+
+        List list = new ArrayList();
+
+        for(int i=0; i<jCoListMetaData.getFieldCount(); i++) {
+            String fieldName = jCoListMetaData.getName(i);
+            int indexOf = jCoListMetaData.indexOf(fieldName);
+            // 描述
+            String description = jCoListMetaData.getDescription(fieldName);
+            // 缺省值
+            String dafault = jCoListMetaData.getDefault(fieldName);
+            // 可选的
+            boolean isOptional = jCoListMetaData.isOptional(fieldName);
+            // 类型
+            String type = jCoListMetaData.getTypeAsString(fieldName);
+            // Class类型
+            String classNameOfField = jCoListMetaData.getClassNameOfField(fieldName);
+
+            boolean isStructure = jCoListMetaData.isTable(fieldName);
+            boolean isTable = jCoListMetaData.isTable(fieldName);
+
+            Map map = new HashMap();
+            map.put("indexOf", indexOf);
+            map.put("fielName", fieldName);
+            map.put("description", description);
+            map.put("dafault", dafault);
+            map.put("isOptional", isOptional);
+            map.put("type", type);
+            map.put("classNameOfField", classNameOfField);
+            if(isStructure || isTable) {
+                JCoRecordMetaData jCoRecordMetaData = jCoListMetaData.getRecordMetaData(fieldName);
+                map.put("records", JCoRecordMetaData(jCoRecordMetaData));
+            }
+            list.add(map);
+        }
+        return list;
+    }
+
+    public List JCoRecordMetaData(JCoRecordMetaData jCoRecordMetaData) {
+        if(jCoRecordMetaData == null) {
+            return null;
+        }
+
+        List list = new ArrayList();
+        for(int i=0; i<jCoRecordMetaData.getFieldCount(); i++) {
+            String fieldName = jCoRecordMetaData.getName(i);
+            int indexOf = jCoRecordMetaData.indexOf(fieldName);
+            String description = jCoRecordMetaData.getDescription(fieldName);
+            String type = jCoRecordMetaData.getTypeAsString(fieldName);
+            String classNameOfField = jCoRecordMetaData.getTypeAsString(fieldName);
+
+            Map map = new HashMap();
+            map.put("indexOf", indexOf);
+            map.put("fieldName", fieldName);
+            map.put("description", description);
+            map.put("type", type);
+            map.put("classNameOfField", classNameOfField);
+            list.add(map);
+        }
+        return list;
+    }
+
     public List parseMetaData(JCoListMetaData jCoListMetaData) {
         List list = new ArrayList();
         int fielCount = jCoListMetaData.getFieldCount();
         for(int i=0; i<fielCount; i++) {
             Map map = new HashMap();
+
             String fielName = jCoListMetaData.getName(i);
             map.put("fielName", fielName);
 

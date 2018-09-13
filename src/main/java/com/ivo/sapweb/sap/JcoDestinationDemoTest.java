@@ -1,10 +1,8 @@
 package com.ivo.sapweb.sap;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.ivo.sapweb.sap.core.BapiCaller;
 import com.ivo.sapweb.sap.core.SapConnectionPool;
 import com.sap.conn.jco.*;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,7 +74,6 @@ public class JcoDestinationDemoTest {
         return map;
     }
 
-    @Test
     public void test() throws JCoException {
 
 //        String functionName = "ZMM_MTRL_PRICE";

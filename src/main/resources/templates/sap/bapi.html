@@ -1,0 +1,144 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h2 class="header-title">BAPI管理</h2>
+        <span class="layui-breadcrumb pull-right">
+            <a href="#!home_console">首页</a>
+            <a><cite>Bapi管理</cite></a>
+        </span>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-form toolbar">
+            搜索：
+            <select id="bapi-search-key">
+                <option value="">--请选择--</option>
+                <option value="bapi_name">BAPI名称</option>
+            </select>
+            <input id="bapi-search-value" class="layui-input search-input" type="text" placeholder="请输入关键字"/>&emsp;
+            <button id="bapi-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+            <button id="bapi-btn-add" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+        </div>
+        <table class="layui-table" id="bapi-table" lay-filter="bapi-table"></table>
+    </div>
+</div>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="bapi-table-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="execute">执行</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="pause">禁用</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="resume">恢复</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="remove">移除</a>
+</script>
+
+<script>
+    layui.use(['form', 'table', 'util', 'admin', 'element'], function () {
+        var form = layui.form;
+        var table = layui.table;
+        var layer = layui.layer;
+        var util = layui.util;
+        var admin = layui.admin;
+        var element = layui.element;
+
+        form.render('select');
+
+        //渲染表格
+        table.render({
+            elem: '#bapi-table',
+            url: 'sap/bapi/list',
+            page: true,
+            cols: [
+                [
+                    {align: 'center', type: 'numbers'},
+                    {align: 'center', field: 'bapiName', sort: true, title: 'BAPI'},
+                    {align: 'center', field: 'group', title: '分组'},
+                    {align: 'center', field: 'description', title: '描述'},
+                    {align: 'center', field: 'count', title: '计数'},
+                    {align: 'center', field: 'creator', title: '创建者'},
+                    {align: 'center', field: 'createTime', title: '创建时间'},
+                    {
+                        align: 'center',
+                        field: 'state',
+                        templet: function (d) {
+                            if (d.state == 1) {
+                                return '<span class="layui-badge layui-bg-blue">正常</span>';
+                            }
+                            if (d.state == 0) {
+                                return '<span class="layui-badge layui-bg-black">禁用</span>';
+                            }
+                        },
+                        title: '状态'
+                    },
+                    {align: 'center', toolbar: '#bapi-table-bar', title: '操作', width: 280}
+                ]
+            ],
+        });
+
+        // 添加按钮点击事件
+        $('#bapi-btn-add').click(function () {
+            showEditModel();
+        });
+
+        // 工具条点击事件
+        table.on('tool(bapi-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'execute') { // 执行
+
+            } else if (layEvent === 'edit') { // 修改
+                showEditModel(data);
+            } else if (layEvent === 'pause') { // 暂停
+                postBapi('pause', data.bapiId);
+            } else if (layEvent === 'resume') { // 恢复
+                postBapi('resume', data.bapiId);
+            } else if (layEvent === 'remove') { // 移除
+                postBapi('remove', data.bapiId);
+            }
+        });
+
+        // 显示表单弹框
+        var showEditModel = function (data) {
+            var title = data ? '修改Bapi' : '添加Bapi';
+            admin.putTempData('t_bapi', data);
+            admin.popupCenter({
+                title: title,
+                path: 'sap/bapi/editForm',
+                finish: function () {
+                    tableReload();
+                }
+            });
+        };
+
+        // 搜索按钮点击事件
+        $('#bapi-btn-search').click(function () {
+            tableReload();
+        });
+
+        var tableReload = function () {
+            var key = $('#bapi-search-key').val();
+            var value = $('#bapi-search-value').val();
+            table.reload('bapi-table',
+                {
+                    where: {searchKey: key, searchValue: value}
+                }
+            );
+        }
+
+        // 暂停、恢复、移除操作
+        var postBapi = function(type, bapiId) {
+            var url = 'sap/bapi/' + type;
+            layer.load(2);
+            $.post(url, {
+                bapiId: bapiId
+            }, function (data) {
+                layer.closeAll('loading');
+                if (data.code == 200) {
+                    layer.msg(data.msg, {icon: 1});
+                    tableReload();
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                }
+            });
+        };
+    })
+</script>
