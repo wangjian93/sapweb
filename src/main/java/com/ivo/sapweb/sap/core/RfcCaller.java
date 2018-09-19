@@ -11,6 +11,7 @@ import java.util.Map;
  * @date 2018/9/15
  */
 public interface RfcCaller extends Rfc {
+
     /**
      * 调用sap中的RFC
      * @param rfcName
@@ -31,6 +32,7 @@ public interface RfcCaller extends Rfc {
      * 获取RFC的各参数信息
      * @param rfcName
      * @return
+     * @throws JCoException
      */
     Map getRfcParamsInfo(String rfcName) throws JCoException;
 }

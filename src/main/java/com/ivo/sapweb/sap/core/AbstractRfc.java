@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * SAP访问的实现
  * @author wangjian
  * @date 2018/9/15
  */
