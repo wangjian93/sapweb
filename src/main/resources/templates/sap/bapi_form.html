@@ -47,7 +47,7 @@
         form.render('select');
 
         var url = 'sap/bapi/add';
-        //回显bapi数据
+        // 回显bapi数据
         var bapi = admin.getTempData('t_bapi');
         if (bapi) {
             $('input[name="bapiName"]').attr('readonly', 'readonly');

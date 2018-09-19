@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="layout/cssPart::cssPart">
+</head>
+<body>
+<div class="layui-container">
+
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h2 class="header-title" th:text="${bapiName}"></h2>
+        <span class="layui-breadcrumb pull-right">
+            <button id="bapi-btn-access" class="layui-btn layui-btn-normal layui-btn-xs"><i class="layui-icon">&#xe615;</i>Run</button>
+        </span>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-row layui-col-space20">
+            <div class="layui-col-md6">
+                <div id="import_jsoneditor"></div>
+            </div>
+            <div class="layui-col-md6">
+                <div id="export_jsoneditor"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="layout/jsPart::jsPart"></div>
+
+</div>
+
+<script>
+    layui.use(['form', 'table', 'util', 'admin', 'element'], function () {
+
+        var import_container, export_container,
+            import_json, export_json,
+            import_editor, export_editor,
+            import_options, export_options;
+
+        import_container = document.getElementById('import_jsoneditor');
+        export_container = document.getElementById('export_jsoneditor');
+
+        import_json = {
+            "bapiName": "ZSD_EIF_VBSN",
+            "inParams": {
+            "VBELN": "0080010000",
+                "POSNR": "10",
+                "AESKD": "M10-Z"
+        },
+            "outParamsNames": [
+            "L_SUBRC"
+        ],
+            "outStructuresNames": [],
+            "outTablesNames": []
+        };
+
+        export_json = {};
+
+        import_options = {
+            mode: 'code',
+            onError: function (err) {
+                alert(err.toString());
+            },
+            onChange: function () {
+
+            },
+            onChangeJSON: function (json) {
+            },
+            onChangeText: function (text) {
+                import_json = $.parseJSON(text);
+            },
+            indentation: 4,
+            escapeUnicode: true
+        };
+
+        export_options = {
+            mode: 'code',
+            onError: function (err) {
+                alert(err.toString());
+            },
+            onChange: function () {
+            },
+            onChangeJSON: function (json) {
+                alert("b");
+            },
+            onChangeText: function (text) {
+                export_json = text;
+            },
+            indentation: 4,
+            escapeUnicode: true
+        };
+
+        import_editor = new JSONEditor(import_container, import_options, import_json);
+        export_editor = new JSONEditor(export_container, export_options, export_json);
+
+
+        // 按钮点击事件
+        $('#bapi-btn-access').click(function () {
+            layer.load(2);
+            $.ajax({
+                type : 'POST',
+                url : '../callBapi/call',
+                contentType : "application/json",
+                dataType : 'json',
+                data : JSON.stringify(import_json),
+                success: function(data) {
+                    layer.closeAll('loading');
+                    if (data.code == 200) {
+                        layer.msg(data.msg, {icon: 1});
+                        export_json = data.data;
+                        export_editor.update(export_json);
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                },
+                error: function(data) {
+                    layer.closeAll('loading');
+                    layer.msg("服务器连接失败", {icon: 2});
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
