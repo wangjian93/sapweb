@@ -3,16 +3,15 @@ package com.ivo.sapweb.sap.controller;
 import com.ivo.sapweb.common.BaseController;
 import com.ivo.sapweb.common.JsonResult;
 import com.ivo.sapweb.common.PageResult;
-import com.ivo.sapweb.sap.core.BapiCaller;
 import com.ivo.sapweb.sap.model.Bapi;
 import com.ivo.sapweb.sap.service.BapiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
-import java.util.Map;
 
 /**
  * @author wangjian
@@ -25,17 +24,32 @@ public class BapiController extends BaseController {
     @Autowired
     private BapiService bapiService;
 
-    @Autowired
-    private BapiCaller bapiCaller;
-
+    /**
+     * 主界面
+     * @return
+     */
     @RequestMapping
     public String bapi() {
         return "sap/bapi.html";
     }
 
+    /**
+     * 添加修改界面
+     * @return
+     */
     @RequestMapping("/editForm")
     public String edit() {
         return "sap/bapi_form.html";
+    }
+
+    /**
+     * bapi访问界面
+     * @return
+     */
+    @RequestMapping("/access")
+    public String access(Model model, String bapiName) {
+        model.addAttribute("bapiName", bapiName);
+        return "sap/bapi_access.html";
     }
 
     /**
@@ -118,15 +132,5 @@ public class BapiController extends BaseController {
         } else {
             return JsonResult.ok("移除失败");
         }
-    }
-
-    /**
-     * 获取bapi 的参数信息
-     */
-    @ResponseBody
-    @RequestMapping("/getBapiParamsInfo")
-    public JsonResult getBapiParamsInfo(String bapiName) {
-        Map map = bapiCaller.getFunctionParamsInfo(bapiName);
-        return JsonResult.ok().put("data", map);
     }
 }
