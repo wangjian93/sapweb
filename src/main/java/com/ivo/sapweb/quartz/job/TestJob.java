@@ -1,10 +1,8 @@
 package com.ivo.sapweb.quartz.job;
 
-import com.ivo.sapweb.quartz.service.JobService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 
