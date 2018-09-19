@@ -9,10 +9,6 @@ spring:
 
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://10.20.2.9:3306/aab?useUnicode=true&characterEncoding=utf8
-    username: test
-    password: test
-    driver-class-name: com.mysql.jdbc.Driver
     # 配置获取连接等待超时的时间
     maxWait: 60000
     # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
@@ -39,7 +35,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*Mapper.xml
-  typeAliasesPackage: com.ivo.sapweb.*.model, com.ivo.sapweb.*.model
+  typeAliasesPackage: com.ivo.sapweb.*.model, com.ivo.sapweb.*.entity
   global-config:
     id-type: 0
     field-strategy: 1
@@ -49,7 +45,3 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
-
-
-
-

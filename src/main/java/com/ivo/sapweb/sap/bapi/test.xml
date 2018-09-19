@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bapi-map space="array">
+    <bapi name="ZMM_MSEG_ETL">
+        <table name="T_MSEG" model="com.ivo.sapweb.sap.bapi.DocumentSegment">
+            <column name="MBLNR" property="MBLNR" type="string" />
+            <column name="MJAHR" property="MJAHR" type="string" />
+            <column name="ZEILE" property="ZEILE" type="string" />
+            <column name="BWART" property="BWART" type="string" />
+            <column name="XAUTO" property="XAUTO" type="string" />
+            <column name="MATNR" property="MATNR" type="string" />
+            <column name="WERKS" property="WERKS" type="string" />
+            <column name="LGORT" property="LGORT" type="double" />
+            <column name="CHARG" property="CHARG" type="double" />
+            <column name="SOBKZ" property="SOBKZ" type="double" />
+            <column name="LIFNR" property="LIFNR" type="string" />
+            <column name="KUNNR" property="KUNNR" type="string" />
+        </table>
+    </bapi>
+</bapi-map>

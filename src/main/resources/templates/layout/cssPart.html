@@ -8,7 +8,12 @@
     <link rel="stylesheet" th:href="@{/assets/libs/zTree/css/zTreeStyle/zTreeStyle.css}"/>
     <link rel="stylesheet" th:href="@{/module/formSelects/formSelects-v4.css}"/>
     <link rel="stylesheet" th:href="@{/assets/css/admin.css}"/>
+    <!-- 使用EasyWeb主题生成器生成的主题 -->
     <link rel="stylesheet" th:if="${null != #session and null != #session.getAttribute('theme')}"
-          th:href="@{'/assets/css/theme-' + ${#session.getAttribute('theme')} + '.css'}"/> <!-- 使用EasyWeb主题生成器生成的主题 -->
+          th:href="@{'/assets/css/theme-' + ${#session.getAttribute('theme')} + '.css'}"/>
+
+    <!-- jsoneditor插件 -->
+    <link rel="stylesheet" th:href="@{/assets/libs/jsoneditor/jsoneditor.min.css}"/>
+
 </div>
 </html>
