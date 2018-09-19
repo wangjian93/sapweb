@@ -26,7 +26,7 @@ public class SapConnectionPool {
      * 获取SAP连接
      * @return
      */
-    public static JCoDestination getSAPDestination(){
+    public static synchronized JCoDestination getSAPDestination(){
         try {
             JCoDestination dest = JCoDestinationManager.getDestination(SAP_CONN);
             return dest;
