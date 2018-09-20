@@ -28,6 +28,7 @@ public class BapiMapManager {
     }
 
     public static Map initBapiMap() {
-        return BapiMapXmlParse.getBapiMap(mapConfigFile);
+        System.out.println("读取bapi管理的xml，解析获取bapiMap");
+        return bapiMap = BapiMapXmlParse.getBapiMap(mapConfigFile);
     }
 }
