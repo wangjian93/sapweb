@@ -10,91 +10,99 @@ layui.define(['layer', 'table'], function (exports) {
             if (!treetable.checkParam(param)) {
                 return;
             }
-            var doneCallback = param.done;
             // 获取数据
+            if (param.data) {
+                treetable.init(param, param.data);
+            } else {
+                $.getJSON(param.url, param.where, function (res) {
+                    treetable.init(param, res.data);
+                });
+            }
+        },
+        // 渲染表格
+        init: function (param, data) {
             var mData = [];
-            $.getJSON(param.url, param.where, function (res) {
-                var tNodes = res.data;
-                // 补上id和pid字段
-                for (var i = 0; i < tNodes.length; i++) {
-                    var tt = tNodes[i];
-                    if (!tt.id) {
-                        if (!param.treeIdName) {
-                            layer.msg('参数treeIdName不能为空', {icon: 5});
-                            return;
-                        }
-                        tt.id = tt[param.treeIdName];
+            var doneCallback = param.done;
+            var tNodes = data;
+            // 补上id和pid字段
+            for (var i = 0; i < tNodes.length; i++) {
+                var tt = tNodes[i];
+                if (!tt.id) {
+                    if (!param.treeIdName) {
+                        layer.msg('参数treeIdName不能为空', {icon: 5});
+                        return;
                     }
-                    if (!tt.pid) {
-                        if (!param.treePidName) {
-                            layer.msg('参数treePidName不能为空', {icon: 5});
-                            return;
+                    tt.id = tt[param.treeIdName];
+                }
+                if (!tt.pid) {
+                    if (!param.treePidName) {
+                        layer.msg('参数treePidName不能为空', {icon: 5});
+                        return;
+                    }
+                    tt.pid = tt[param.treePidName];
+                }
+            }
+
+            // 对数据进行排序
+            var sort = function (s_pid, data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].pid == s_pid) {
+                        var len = mData.length;
+                        if (len > 0 && mData[len - 1].id == s_pid) {
+                            mData[len - 1].isParent = true;
                         }
-                        tt.pid = tt[param.treePidName];
+                        mData.push(data[i]);
+                        sort(data[i].id, data);
                     }
                 }
+            };
+            sort(param.treeSpid, tNodes);
 
-                // 对数据进行排序
-                var sort = function (s_pid, data) {
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].pid == s_pid) {
-                            var len = mData.length;
-                            if (len > 0 && mData[len - 1].id == s_pid) {
-                                mData[len - 1].isParent = true;
-                            }
-                            mData.push(data[i]);
-                            sort(data[i].id, data);
-                        }
-                    }
-                };
-                sort(param.treeSpid, tNodes);
+            // 重写参数
+            param.url = undefined;
+            param.data = mData;
+            param.page = {
+                count: param.data.length,
+                limit: param.data.length
+            };
+            param.cols[0][param.treeColIndex].templet = function (d) {
+                var mId = d.id;
+                var mPid = d.pid;
+                var isDir = d.isParent;
+                var emptyNum = treetable.getEmptyNum(mPid, mData);
+                var iconHtml = '';
+                for (var i = 0; i < emptyNum; i++) {
+                    iconHtml += '<span class="treeTable-empty"></span>';
+                }
+                if (isDir) {
+                    iconHtml += '<i class="layui-icon layui-icon-triangle-d"></i> <i class="layui-icon layui-icon-layer"></i>';
+                } else {
+                    iconHtml += '<i class="layui-icon layui-icon-file"></i>';
+                }
+                iconHtml += '&nbsp;&nbsp;';
+                var ttype = isDir ? 'dir' : 'file';
+                var vg = '<span class="treeTable-icon open" lay-tid="' + mId + '" lay-tpid="' + mPid + '" lay-ttype="' + ttype + '">';
+                return vg + iconHtml + d[param.cols[0][param.treeColIndex].field] + '</span>'
+            };
 
-                // 重写参数
-                param.url = undefined;
-                param.data = mData;
-                param.page = {
-                    count: param.data.length,
-                    limit: param.data.length
-                };
-                param.cols[0][param.treeColIndex].templet = function (d) {
-                    var mId = d.id;
-                    var mPid = d.pid;
-                    var isDir = d.isParent;
-                    var emptyNum = treetable.getEmptyNum(mPid, mData);
-                    var iconHtml = '';
-                    for (var i = 0; i < emptyNum; i++) {
-                        iconHtml += '<span class="treeTable-empty"></span>';
-                    }
-                    if (isDir) {
-                        iconHtml += '<i class="layui-icon layui-icon-triangle-d"></i> <i class="layui-icon layui-icon-layer"></i>';
-                    } else {
-                        iconHtml += '<i class="layui-icon layui-icon-file"></i>';
-                    }
-                    iconHtml += '&nbsp;&nbsp;';
-                    var ttype = isDir ? 'dir' : 'file';
-                    var vg = '<span class="treeTable-icon open" lay-tid="' + mId + '" lay-tpid="' + mPid + '" lay-ttype="' + ttype + '">';
-                    return vg + iconHtml + d[param.cols[0][param.treeColIndex].field] + '</span>'
-                };
+            param.done = function (res, curr, count) {
+                $(param.elem).next().addClass('treeTable');
+                $('.treeTable .layui-table-page').css('display', 'none');
+                $(param.elem).next().attr('treeLinkage', param.treeLinkage);
+                // 绑定事件换成对body绑定
+                /*$('.treeTable .treeTable-icon').click(function () {
+                    treetable.toggleRows($(this), param.treeLinkage);
+                });*/
+                if (param.treeDefaultClose) {
+                    treetable.foldAll(param.elem);
+                }
+                if (doneCallback) {
+                    doneCallback(res, curr, count);
+                }
+            };
 
-                param.done = function (res, curr, count) {
-                    $(param.elem).next().addClass('treeTable');
-                    $('.treeTable .layui-table-page').css('display', 'none');
-                    $(param.elem).next().attr('treeLinkage', param.treeLinkage);
-                    // 绑定事件换成对body绑定
-                    /*$('.treeTable .treeTable-icon').click(function () {
-                        treetable.toggleRows($(this), param.treeLinkage);
-                    });*/
-                    if (param.treeDefaultClose) {
-                        treetable.foldAll(param.elem);
-                    }
-                    if (doneCallback) {
-                        doneCallback(res, curr, count);
-                    }
-                };
-
-                // 渲染表格
-                table.render(param);
-            });
+            // 渲染表格
+            table.render(param);
         },
         // 计算缩进的数量
         getEmptyNum: function (pid, data) {

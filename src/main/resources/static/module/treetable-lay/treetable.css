@@ -13,5 +13,6 @@
 
 .treeTable-icon.open .layui-icon-triangle-d:before {
     content: "\e625";
+    background-color: transparent;
 }
 
