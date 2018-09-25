@@ -281,15 +281,11 @@ abstract class AbstractRfc implements RfcCaller {
         // 内表信息
         JCoListMetaData tablesParams = function.getTableParameterList();
 
-        if(importParams != null) {
-            map.put("import", parseJCoListMetaData(importParams));
-        }
-        if(exportParams != null) {
-            map.put("export", parseJCoListMetaData(exportParams));
-        }
-        if(tablesParams != null) {
-            map.put("tables", parseJCoListMetaData(tablesParams));
-        }
+        map.put("import", parseJCoListMetaData(importParams));
+
+        map.put("export", parseJCoListMetaData(exportParams));
+
+        map.put("tables", parseJCoListMetaData(tablesParams));
 
         return map;
     }
@@ -301,10 +297,12 @@ abstract class AbstractRfc implements RfcCaller {
      */
     public List parseJCoListMetaData(JCoListMetaData jCoListMetaData) {
         if(jCoListMetaData == null) {
-            return null;
+            return new ArrayList();
         }
 
         List list = new ArrayList();
+
+        String pname = jCoListMetaData.getName();
 
         // 遍历jCoListMetaData的field
         for(int i=0; i<jCoListMetaData.getFieldCount(); i++) {
@@ -328,18 +326,19 @@ abstract class AbstractRfc implements RfcCaller {
 
             Map map = new HashMap();
             map.put("indexOf", indexOf);
-            map.put("fielName", fieldName);
+            map.put("fieldName", fieldName);
             map.put("description", description);
             map.put("dafault", dafault);
             map.put("isOptional", isOptional);
             map.put("type", type);
             map.put("classNameOfField", classNameOfField);
+            map.put("pname", pname);
 
             // 判断是否是结构体或内表，是则继续解析JCoRecordMetaData
             if(isStructure || isTable) {
                 // Record的栏位信息
                 JCoRecordMetaData jCoRecordMetaData = jCoListMetaData.getRecordMetaData(fieldName);
-                map.put("records", JCoRecordMetaData(jCoRecordMetaData));
+                list.addAll(JCoRecordMetaData(jCoRecordMetaData, fieldName));
             }
             list.add(map);
         }
@@ -351,12 +350,14 @@ abstract class AbstractRfc implements RfcCaller {
      * @param jCoRecordMetaData
      * @return
      */
-    public List JCoRecordMetaData(JCoRecordMetaData jCoRecordMetaData) {
+    public List JCoRecordMetaData(JCoRecordMetaData jCoRecordMetaData, String tableName) {
         if(jCoRecordMetaData == null) {
-            return null;
+            return new ArrayList();
         }
 
         List list = new ArrayList();
+
+        String pname = tableName;
 
         // 遍历jCoRecordMetaData的field
         for(int i=0; i<jCoRecordMetaData.getFieldCount(); i++) {
@@ -369,7 +370,7 @@ abstract class AbstractRfc implements RfcCaller {
             // 类型
             String type = jCoRecordMetaData.getTypeAsString(fieldName);
             // java中对应的Class
-            String classNameOfField = jCoRecordMetaData.getTypeAsString(fieldName);
+            String classNameOfField = jCoRecordMetaData.getClassNameOfField(fieldName);
 
             Map map = new HashMap();
             map.put("indexOf", indexOf);
@@ -377,7 +378,9 @@ abstract class AbstractRfc implements RfcCaller {
             map.put("description", description);
             map.put("type", type);
             map.put("classNameOfField", classNameOfField);
+            map.put("pname", pname);
             list.add(map);
+
         }
         return list;
     }
