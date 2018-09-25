@@ -4,33 +4,57 @@
 <head th:include="layout/cssPart::cssPart">
 </head>
 <body>
-<div class="layui-container">
+<!--<div class="layui-container">-->
 
-<div class="layui-card">
-    <div class="layui-card-header">
-        <h2 class="header-title" th:text="${bapiName}"></h2>
-        <span class="layui-breadcrumb pull-right">
-            <button id="bapi-btn-access" class="layui-btn layui-btn-normal layui-btn-xs"><i class="layui-icon">&#xe615;</i>Run</button>
-        </span>
-    </div>
-    <div class="layui-card-body">
-        <div class="layui-row layui-col-space20">
-            <div class="layui-col-md6">
-                <div id="import_jsoneditor"></div>
-            </div>
-            <div class="layui-col-md6">
-                <div id="export_jsoneditor"></div>
+
+    <div class="layui-card" style="padding: 20px 20px 20px 20px;">
+
+        <input id="bapiName" th:value="${bapiName}" hidden/>
+
+        <div class="layui-card-header">
+            <h2 class="header-title" th:text="${bapiName}"></h2>
+            <span class="layui-breadcrumb pull-right">
+                <button id="bapi-btn-access" class="layui-btn layui-btn-normal layui-btn-xs"><i class="layui-icon">&#xe615;</i>Run</button>
+            </span>
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-row layui-col-space30">
+                <div class="layui-col-md7">
+
+                    <h4>Import参数信息</h4>
+                    <table class="layui-table" id="bapi-importParams-table" lay-filter="bapi-importParams-table"></table>
+
+                    <h4>Export参数信息</h4>
+                    <table class="layui-table" id="bapi-exportParams-table" lay-filter="bapi-exportParams-table"></table>
+
+                    <h4>Table参数信息</h4>
+                    <table class="layui-table" id="bapi-tableParams-table" lay-filter="bapi-tableParams-table"></table>
+
+                </div>
+
+                <div class="layui-col-md5">
+
+                    <h4>发送数据:</h4>
+                    <div id="import_jsoneditor" style="height: 500px;"></div>
+
+                    <h4>返回数据:</h4>
+                    <div id="export_jsoneditor" style="height: 500px;"></div>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
+<!--</div>-->
+
 
 <div th:include="layout/jsPart::jsPart"></div>
 
-</div>
-
 <script>
-    layui.use(['form', 'table', 'util', 'admin', 'element'], function () {
+    layui.use(['table', 'treetable', 'form', 'util', 'admin', 'element'], function () {
+
+        var layer = layui.layer;
+        var table = layui.table;
+        var treetable = layui.treetable;
 
         var import_container, export_container,
             import_json, export_json,
@@ -41,17 +65,11 @@
         export_container = document.getElementById('export_jsoneditor');
 
         import_json = {
-            "bapiName": "ZSD_EIF_VBSN",
+            "bapiName":"ZMM_MSEG_ETL",
             "inParams": {
-            "VBELN": "0080010000",
-                "POSNR": "10",
-                "AESKD": "M10-Z"
-        },
-            "outParamsNames": [
-            "L_SUBRC"
-        ],
-            "outStructuresNames": [],
-            "outTablesNames": []
+                "I_FROMDATE":"2018-08-15 00:00:00",
+                "I_TODATE":"2018-09-04 00:00:00"},
+            "outTablesNames": ["T_MSEG"]
         };
 
         export_json = {};
@@ -119,6 +137,106 @@
                 }
             });
         });
+
+        // 渲染表格
+        var renderTable = function (bapiName) {
+            layer.load(2);
+            $.post('../callBapi/getBapiInfo', {bapiName: bapiName} , function (res) {
+                layer.closeAll('loading');
+                if (res.code == 200) {
+
+                    var importData = res.data.import;
+                    var exportData = res.data.export;
+                    var tableData = res.data.tables;
+
+                    console.log(importData);
+                    console.log(exportData);
+                    console.log(tableData);
+
+                    // 输入参数
+                    treetable.render({
+                        treeColIndex: 1,
+                        treeSpid: 'INPUT',
+                        treeIdName: 'fieldName',
+                        treePidName: 'pname',
+                        treeDefaultClose: true,
+                        treeLinkage: false,
+                        elem: '#bapi-importParams-table',
+                        data: importData,
+                        page: false,
+                        size: 'sm',
+                        cols: [
+                            [
+                                {align: 'center', field: 'indexOf', title: '序号', width: 60},
+                                {align: 'left', field: 'fieldName', title: '栏位'},
+                                {align: 'center', field: 'description', title: '描述'},
+                                {align: 'center', field: 'dafault', title: '默认'},
+                                {align: 'center', field: 'isOptional', title: '必须', width: 60},
+                                {align: 'center', field: 'type', title: '类型'},
+                                {align: 'center', field: 'classNameOfField', title: 'Java'}
+                            ]
+                        ]
+                    });
+
+                    // 输出参数
+                    treetable.render({
+                        treeColIndex: 1,
+                        treeSpid: 'OUTPUT',
+                        treeIdName: 'fieldName',
+                        treePidName: 'pname',
+                        treeDefaultClose: true,
+                        treeLinkage: false,
+                        elem: '#bapi-exportParams-table',
+                        data: exportData,
+                        page: false,
+                        size: 'sm',
+                        cols: [
+                            [
+                                {align: 'center', field: 'indexOf', title: '序号', width: 60},
+                                {align: 'left', field: 'fieldName', title: '栏位'},
+                                {align: 'center', field: 'description', title: '描述'},
+                                {align: 'center', field: 'dafault', title: '缺省值'},
+                                {align: 'center', field: 'isOptional', title: '必须', width: 60},
+                                {align: 'center', field: 'type', title: '类型'},
+                                {align: 'center', field: 'classNameOfField', title: 'Java'}
+                            ]
+                        ]
+                    });
+
+                    // 内表
+                    treetable.render({
+                        treeColIndex: 1,
+                        treeSpid: 'TABLES',
+                        treeIdName: 'fieldName',
+                        treePidName: 'pname',
+                        treeDefaultClose: true,
+                        treeLinkage: false,
+                        elem: '#bapi-tableParams-table',
+                        data: tableData,
+                        page: false,
+                        size: 'sm',
+                        cols: [
+                            [
+                                {align: 'center', field: 'indexOf', title: '序号', width: 60},
+                                {align: 'left', field: 'fieldName', title: '栏位'},
+                                {align: 'center', field: 'description', title: '描述'},
+                                {align: 'center', field: 'dafault', title: '缺省值'},
+                                {align: 'center', field: 'isOptional', title: '必须', width: 60},
+                                {align: 'center', field: 'type', title: '类型'},
+                                {align: 'center', field: 'classNameOfField', title: 'Java'}
+                            ]
+                        ]
+                    });
+
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                }
+
+            });
+        };
+
+        renderTable($("#bapiName").val());
+
     });
 </script>
 </body>

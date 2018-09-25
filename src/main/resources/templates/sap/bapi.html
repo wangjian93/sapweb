@@ -47,7 +47,7 @@
             cols: [
                 [
                     {align: 'center', type: 'numbers'},
-                    {align: 'center', field: 'bapiName', sort: true, title: 'BAPI'},
+                    {align: 'center', field: 'bapiName', sort: true, title: 'BAPI', width:200},
                     {align: 'center', field: 'group', title: '分组'},
                     {align: 'center', field: 'description', title: '描述'},
                     {align: 'center', field: 'count', title: '计数'},
@@ -87,11 +87,11 @@
             } else if (layEvent === 'edit') { // 修改
                 showEditModel(row);
             } else if (layEvent === 'pause') { // 暂停
-                postBapi('pause', data.bapiId);
+                postBapi('pause', row.bapiId);
             } else if (layEvent === 'resume') { // 恢复
-                postBapi('resume', data.bapiId);
+                postBapi('resume', row.bapiId);
             } else if (layEvent === 'remove') { // 移除
-                postBapi('remove', data.bapiId);
+                postBapi('remove', row.bapiId);
             }
         });
 
@@ -112,6 +112,7 @@
         var showAccessModel = function (bapiName) {
             var url = 'sap/bapi/access?bapiName=' + bapiName;
             // // iframe层
+            //var url = "https://www.layui.com/demo/table/auto.html";
             layer.open({
                 type : 2,
                 title : '访问Bapi',
