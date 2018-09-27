@@ -1,4 +1,5 @@
 layui.define(['layer'], function (exports) {
+    var $ = layui.$;
     var layer = layui.layer;
     var popupRightIndex, popupCenterIndex, popupCenterParam;
 

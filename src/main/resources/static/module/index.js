@@ -1,4 +1,5 @@
 layui.define(['admin', 'layer', 'element'], function (exports) {
+    var $ = layui.$;
     var admin = layui.admin;
     var layer = layui.layer;
     var element = layui.element;

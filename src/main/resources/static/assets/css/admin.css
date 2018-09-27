@@ -43,7 +43,7 @@ html {
 
 .layui-layout-admin .layui-header a {
     color: #333;
-    padding: 0 15px;
+    /*padding: 0 15px;*/
 }
 
 .layui-layout-admin .layui-header a:hover {
@@ -77,7 +77,7 @@ html {
 }
 
 .layui-layout-admin .layui-header .layui-logo img {
-    height: 40px;
+    height: 32px;
 }
 
 .layui-layout-admin .layui-header .layui-logo cite {
@@ -134,7 +134,7 @@ html {
 }
 
 .layui-layout-admin .layui-side .layui-nav .layui-nav-item .layui-nav-child a {
-    padding-left: 50px; /** 导航字体位置 */
+    /*padding-left: 50px;*/ /** 导航字体位置 */
 }
 
 .layui-layout-admin .layui-side .layui-nav .layui-nav-item .layui-nav-child .layui-nav-child a {
@@ -701,4 +701,30 @@ body.layui-fluid {
 .layui-layout-admin .layui-body.admin-iframe-body {
     padding: 0;
     overflow: hidden;
+}
+
+.layui-side-menu .layui-nav .layui-nav-item a {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 45px;
+    padding-right: 30px;
+}
+
+.layui-side-menu .layui-nav .layui-nav-item .layui-icon {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    margin-top: -19px;
+}
+
+.layui-layout-admin .layui-layout-left .layui-nav-item {
+    margin: 0 20px;
+}
+
+.layui-layout-admin .layui-layout-left a, .layui-layout-admin .layui-layout-right {
+    padding: 0;
+}
+
+* {
+    box-sizing: content-box;
 }

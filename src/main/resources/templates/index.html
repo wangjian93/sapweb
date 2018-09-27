@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="layout/cssPart::cssPart">
-    <title>EasyWeb</title>
-</head>
+<head th:include="layout/cssPart::cssPart"></head>
 
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <!-- 头部 -->
-    <div class="layui-header" th:include="layout/header::header">
+    <div class="layui-header" th:include="layout/header::header" style="box-sizing: content-box;">
     </div>
 
     <!-- 侧边栏 -->
-    <div class="layui-side" th:include="layout/side::side">
+    <div class="layui-side layui-side-menu" th:include="layout/side::side" style="box-sizing: content-box;">
     </div>
 
     <!-- 主体部分 -->
