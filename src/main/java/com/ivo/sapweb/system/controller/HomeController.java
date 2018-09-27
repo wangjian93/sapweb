@@ -10,6 +10,7 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +42,7 @@ public class HomeController {
     /**
      * 控制台
      */
-    @RequestMapping("/console")
+    @GetMapping("/console")
     public String console(Model model) {
 
         int threadPoolSize = 0;
@@ -95,7 +96,7 @@ public class HomeController {
     /**
      * 消息弹窗
      */
-    @RequestMapping("/message")
+    @GetMapping("/message")
     public String message() {
         return "tpl/message.html";
     }
@@ -103,7 +104,7 @@ public class HomeController {
     /**
      * 修改密码弹窗
      */
-    @RequestMapping("/password")
+    @GetMapping("/password")
     public String password() {
         return "tpl/password.html";
     }
@@ -111,7 +112,7 @@ public class HomeController {
     /**
      * 主题设置弹窗
      */
-    @RequestMapping("/theme")
+    @GetMapping("/theme")
     public String theme() {
         return "tpl/theme.html";
     }
@@ -119,7 +120,7 @@ public class HomeController {
     /**
      * 设置主题
      */
-    @RequestMapping("/setTheme")
+    @GetMapping("/setTheme")
     public String setTheme(String themeName, HttpServletRequest request) {
         if (null == themeName) {
             request.getSession().removeAttribute("theme");

@@ -44,7 +44,7 @@ public class MainController extends BaseController implements ErrorController {
     /**
      * 主页
      */
-    @RequestMapping({"/", "/index"})
+    @GetMapping({"/", "/index"})
     public String index(Model model) {
         List<Authorities> authorities = authoritiesService.listByUserId(getLoginUserId());
         List<Map<String, Object>> menuTree = getMenuTree(authorities, -1);
@@ -96,7 +96,7 @@ public class MainController extends BaseController implements ErrorController {
     /**
      * 图形验证码，用assets开头可以排除shiro拦截
      */
-    @RequestMapping("/assets/captcha")
+    @GetMapping("/assets/captcha")
     public void captcha(HttpServletRequest request, HttpServletResponse response) {
         try {
             CaptchaUtil.outPng(request, response);
@@ -111,7 +111,7 @@ public class MainController extends BaseController implements ErrorController {
      * @param model
      * @return
      */
-    @RequestMapping("/iframe")
+    @GetMapping("/iframe")
     public String iframe(String url, Model model) {
         model.addAttribute("url", url);
         return "tpl/iframe.html";
@@ -127,7 +127,7 @@ public class MainController extends BaseController implements ErrorController {
         List<Map<String, Object>> list = new ArrayList<>();
         for (int i = 0; i < authorities.size(); i++) {
             Authorities temp = authorities.get(i);
-            if (temp.getIsMenu() == 0 && parentId == temp.getParentId()) {
+            if (temp.getIsMenu() == 0 && parentId.equals(temp.getParentId())) {
                 Map<String, Object> map = new HashMap<>();
                 map.put("menuName", temp.getAuthorityName());
                 map.put("menuIcon", temp.getMenuIcon());
@@ -164,11 +164,20 @@ public class MainController extends BaseController implements ErrorController {
      * @param code
      * @return
      */
-    @RequestMapping("/error")
+    @GetMapping("/error")
     public String error(String code) {
         if ("403".equals(code)) {
             return "error/403.html";
         }
         return "error/404.html";
+    }
+
+    /**
+     * swagger 页面
+     */
+    @GetMapping("/swagger")
+    public String swagger(Model model) {
+        model.addAttribute("url", "swagger-ui.html");
+        return "tpl/iframe.html";
     }
 }

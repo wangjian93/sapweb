@@ -10,10 +10,11 @@ import com.ivo.sapweb.system.model.Role;
 import com.ivo.sapweb.system.model.User;
 import com.ivo.sapweb.system.service.RoleService;
 import com.ivo.sapweb.system.service.UserService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -35,12 +36,12 @@ public class UserController extends BaseController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping
+    @GetMapping
     public String user() {
         return "system/user.html";
     }
 
-    @RequestMapping("/editForm")
+    @GetMapping("/editForm")
     public String addUser(Model model) {
         List<Role> roles;
         roles = roleService.list(false);
@@ -51,7 +52,7 @@ public class UserController extends BaseController {
     /**
      * 查询用户列表
      */
-    @RequestMapping("/list")
+    @PostMapping("/list")
     @ResponseBody
     public PageResult<User> list(Integer page, Integer limit, String searchKey, String searchValue) {
         if (page == null) {
@@ -67,7 +68,7 @@ public class UserController extends BaseController {
     /**
      * 添加用户
      */
-    @RequestMapping("/add")
+    @PostMapping("/add")
     @ResponseBody
     public JsonResult add(User user, String roleId) {
         user.setRoles(getRoles(roleId));
@@ -82,7 +83,7 @@ public class UserController extends BaseController {
     /**
      * 修改用户
      **/
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @ResponseBody
     public JsonResult update(User user, String roleId) {
         user.setRoles(getRoles(roleId));
@@ -108,7 +109,7 @@ public class UserController extends BaseController {
     /**
      * 修改用户状态
      */
-    @RequestMapping("/updateState")
+    @PostMapping("/updateState")
     @ResponseBody
     public JsonResult updateState(Integer userId, Integer state) {
         if (userService.updateState(userId, state)) {
@@ -122,7 +123,7 @@ public class UserController extends BaseController {
      * 修改自己密码
      */
     @ResponseBody
-    @RequestMapping("/updatePsw")
+    @PostMapping("/updatePsw")
     public JsonResult updatePsw(String oldPsw, String newPsw) {
         if ("admin".equals(getLoginUser().getUsername())) {
             return JsonResult.error("演示账号admin关闭该功能");
@@ -144,7 +145,7 @@ public class UserController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/restPsw")
+    @PostMapping("/restPsw")
     public JsonResult resetPsw(Integer userId) {
         User byId = userService.getById(userId);
         if (userService.updatePsw(userId, byId.getUsername(), "123456")) {

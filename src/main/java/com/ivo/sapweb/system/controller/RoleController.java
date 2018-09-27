@@ -34,12 +34,12 @@ public class RoleController {
     @Autowired
     private AuthoritiesService authoritiesService;
 
-    @RequestMapping()
+    @GetMapping()
     public String role() {
         return "system/role.html";
     }
 
-    @RequestMapping("/auth")
+    @GetMapping("/auth")
     public String roleAuth(String roleId, Model model) {
         model.addAttribute("roleId", roleId);
         return "system/role_auth.html";
@@ -49,7 +49,7 @@ public class RoleController {
      * 查询所有角色
      **/
     @ResponseBody
-    @RequestMapping("/list")
+    @PostMapping("/list")
     public PageResult<Role> list(String keyword) {
         List<Role> list = roleService.list(false);
         if (keyword != null && !keyword.trim().isEmpty()) {
@@ -70,7 +70,7 @@ public class RoleController {
      * 添加角色
      **/
     @ResponseBody
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public JsonResult add(Role role) {
         if (roleService.add(role)) {
             return JsonResult.ok("添加成功");
@@ -83,7 +83,7 @@ public class RoleController {
      * 修改角色
      **/
     @ResponseBody
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public JsonResult update(Role role) {
         if (roleService.update(role)) {
             return JsonResult.ok("修改成功！");
@@ -96,7 +96,7 @@ public class RoleController {
      * 删除角色
      **/
     @ResponseBody
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public JsonResult delete(Integer roleId) {
         if (roleService.updateState(roleId, 1)) {
             return JsonResult.ok("删除成功");

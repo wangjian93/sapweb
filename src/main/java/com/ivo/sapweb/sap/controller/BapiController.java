@@ -8,6 +8,8 @@ import com.ivo.sapweb.sap.service.BapiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,7 +30,7 @@ public class BapiController extends BaseController {
      * 主界面
      * @return
      */
-    @RequestMapping
+    @GetMapping
     public String bapi() {
         return "sap/bapi.html";
     }
@@ -37,7 +39,7 @@ public class BapiController extends BaseController {
      * 添加修改界面
      * @return
      */
-    @RequestMapping("/editForm")
+    @GetMapping("/editForm")
     public String edit() {
         return "sap/bapi_form.html";
     }
@@ -46,7 +48,7 @@ public class BapiController extends BaseController {
      * bapi访问界面
      * @return
      */
-    @RequestMapping("/access")
+    @GetMapping("/access")
     public String access(Model model, String bapiName) {
         model.addAttribute("bapiName", bapiName);
         return "sap/bapi_access.html";
@@ -56,7 +58,7 @@ public class BapiController extends BaseController {
      * 查询Bapi列表
      */
     @ResponseBody
-    @RequestMapping("/list")
+    @PostMapping("/list")
     public PageResult<Bapi> list(Integer page, Integer limit, String searchKey, String searchValue) {
         return bapiService.list(page, limit, searchKey, searchValue);
     }
@@ -65,7 +67,7 @@ public class BapiController extends BaseController {
      * 添加Bapi
      */
     @ResponseBody
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public JsonResult add(Bapi bapi) {
         String userName = getLoginUserName();
         bapi.setCreator(userName);
@@ -83,7 +85,7 @@ public class BapiController extends BaseController {
      * 修改Bapi
      **/
     @ResponseBody
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public JsonResult update(Bapi bapi) {
         String userName = getLoginUserName();
         bapi.setUpdater(userName);
@@ -99,7 +101,7 @@ public class BapiController extends BaseController {
      * 暂停Bapi使用
      */
     @ResponseBody
-    @RequestMapping("/pause")
+    @PostMapping("/pause")
     public JsonResult pause(Integer bapiId) {
         if(bapiService.pause(bapiId)) {
             return JsonResult.ok("暂停成功");
@@ -112,7 +114,7 @@ public class BapiController extends BaseController {
      * 恢复Bapi使用
      */
     @ResponseBody
-    @RequestMapping("/resume")
+    @PostMapping("/resume")
     public JsonResult resume(Integer bapiId) {
         if(bapiService.resume(bapiId)) {
             return JsonResult.ok("恢复成功");
@@ -125,7 +127,7 @@ public class BapiController extends BaseController {
      * 移除Bapi
      */
     @ResponseBody
-    @RequestMapping("/remove")
+    @PostMapping("/remove")
     public JsonResult remove(Integer bapiId) {
         if(bapiService.remove(bapiId)) {
             return JsonResult.ok("移除成功");

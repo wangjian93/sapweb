@@ -9,6 +9,8 @@ import com.ivo.sapweb.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -31,12 +33,12 @@ public class AuthoritiesController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping()
+    @GetMapping()
     public String authorities(Model model) {
         return "system/authorities.html";
     }
 
-    @RequestMapping("editForm")
+    @GetMapping("editForm")
     public String editForm(Model model) {
         List<Authorities> authorities = authoritiesService.listMenu();
         model.addAttribute("authorities", authorities);
@@ -47,7 +49,7 @@ public class AuthoritiesController {
      * 查询所有权限
      **/
     @ResponseBody
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public PageResult<Map<String, Object>> list(Integer roleId) {
         List<Map<String, Object>> maps = new ArrayList<>();
         List<Authorities> authorities = authoritiesService.list();
@@ -70,7 +72,7 @@ public class AuthoritiesController {
      * 添加权限
      */
     @ResponseBody
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public JsonResult add(Authorities authorities) {
         if (authoritiesService.add(authorities)) {
             return JsonResult.ok("添加成功");
@@ -82,7 +84,7 @@ public class AuthoritiesController {
      * 修改权限
      */
     @ResponseBody
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public JsonResult update(Authorities authorities) {
         if (authoritiesService.update(authorities)) {
             return JsonResult.ok("修改成功");
@@ -94,7 +96,7 @@ public class AuthoritiesController {
      * 删除权限
      */
     @ResponseBody
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public JsonResult delete(Integer authorityId) {
         if (authoritiesService.delete(authorityId)) {
             return JsonResult.ok("删除成功");

@@ -27,7 +27,7 @@ public class JobController {
     @Autowired
     private JobService jobService;
 
-    @RequestMapping
+    @GetMapping
     public String job() {
         return "quartz/job.html";
     }
@@ -39,7 +39,7 @@ public class JobController {
      * @param pageSize
      * @return
      */
-    @RequestMapping("/list")
+    @PostMapping("/list")
     @ResponseBody
     public PageResult<JobEntity> list(JobEntity jobEntity, Integer pageNo, Integer pageSize) {
 
@@ -112,7 +112,7 @@ public class JobController {
         return JsonResult.ok("任务移除成功");
     }
 
-    @RequestMapping("/addView")
+    @GetMapping("/addView")
     public String add() {
         return "quartz/add.html";
     }

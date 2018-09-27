@@ -5,14 +5,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.ivo.sapweb.common.JsonResult;
 import com.ivo.sapweb.common.util.StringUtil;
+import com.ivo.sapweb.common.util.UserAgentGetter;
 import com.ivo.sapweb.sap.service.BapiCaller;
 import com.sap.conn.jco.JCoException;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -28,10 +29,14 @@ public class CallBapiController {
     private BapiCaller bapiCaller;
 
 
-    @RequestMapping("/call")
+    @ApiOperation(value="访问SAP中的Bapi", notes="传入JSON格式数据")
+    @PostMapping("/call")
     @ResponseBody
-    public JsonResult call(@RequestBody JSONObject jsonParam) {
+    public JsonResult call(@RequestBody JSONObject jsonParam, HttpServletRequest request) {
 
+        long startTime = System.currentTimeMillis();
+
+        // 解析请求参数
         String bapiName = jsonParam.getString("bapiName");
         if(StringUtil.isBlank(bapiName)) {
             return JsonResult.error("BAPI的名称不能为空");
@@ -72,17 +77,38 @@ public class CallBapiController {
             parseParamsFlag = false;
         }
 
+        // 使用UserAgentGetter 获取客户端信息
+        UserAgentGetter agentGetter = new UserAgentGetter(request);
+        String ip = agentGetter.getIpAddr();
+        String os = agentGetter.getOS();
+        String device = agentGetter.getDevice();
+        String browser = agentGetter.getBrowser();
+
+        // 调用bapi
         try {
             Map map = bapiCaller.callBapi(bapiName, importParams, inStructures, inTables, outParamsNames,
                     outStructuresNames, outTablesNames, parseParamsFlag);
+
+            // 计算执行完消耗时间
+            long endTime = System.currentTimeMillis();
+            String timeConsuming = (endTime - startTime) + "ms";
+
+            // 记录bapi的调用历史
+            bapiCaller.recordrBapiUsage(bapiName, true, ip, os, device, browser, timeConsuming);
+
             return JsonResult.ok().put("data", map);
         } catch (JCoException e) {
+
+            long endTime = System.currentTimeMillis();
+            String timeConsuming = (endTime - startTime) + "ms";
+
+            bapiCaller.recordrBapiUsage(bapiName, false, ip, os, device, browser, timeConsuming);
             e.printStackTrace();
             return JsonResult.error(e.getMessage());
         }
     }
 
-    @RequestMapping("/getBapiInfo")
+    @PostMapping("/getBapiInfo")
     @ResponseBody
     public JsonResult getBapiInfo(String bapiName) {
 
