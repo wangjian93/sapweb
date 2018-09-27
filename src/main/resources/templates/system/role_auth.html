@@ -29,6 +29,7 @@
 
 <script>
     layui.use(['form', 'table', 'util'], function () {
+        var $ = layui.$;
         var form = layui.form;
         var table = layui.table;
         var layer = layui.layer;
@@ -40,6 +41,7 @@
             url: '../authorities/list',
             where: {roleId: $('#mRoleId').val()},
             page: false,
+            method: 'post',
             cols: [
                 [
                     {field: 'authorityId', title: 'id'},

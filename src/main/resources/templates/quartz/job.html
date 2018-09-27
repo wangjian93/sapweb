@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" th:href="@{/assets/libs/iview/iview.css}">
     <link rel="stylesheet" th:href="@{/assets/libs/layer/skin/default/layer.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/admin.css}"/>
     <script th:src="@{/assets/libs/jquery-3.2.1.min.js}" type="text/javascript"></script>
     <script th:src="@{/assets/libs/vue.min.js}" type="text/javascript"></script>
     <script th:src="@{/assets/libs/layer/layer.js}" type="text/javascript"></script>
@@ -14,8 +15,7 @@
     </style>
 </head>
 <body>
-<div id="app" v-cloak >
-
+<div id="app" v-cloak>
     <div class="layui-card">
         <div class="layui-card-header">
             <h2 class="header-title">任务管理</h2>
@@ -26,7 +26,7 @@
         </div>
         <div class="layui-card-body">
             <div style="margin-bottom: 6px;margin: 30px">
-                <i-input v-model="content" placeholder="任务名称"  style="width: 300px"></i-input>
+                <i-input v-model="content" placeholder="任务名称" style="padding-right: 20px; width: 300px;"></i-input>
                 <i-button type="primary" @click="search()" icon="ios-search">搜索</i-button>
                 <i-button type="primary" @click="empty()" icon="ios-close-empty">清空</i-button>
                 <i-button type="info" style="float: right;" @click="add()" icon="person-add">新增</i-button>

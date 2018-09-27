@@ -51,6 +51,7 @@
 
 <script>
     layui.use(['form', 'table', 'util', 'admin'], function () {
+        var $ = layui.$;
         var form = layui.form;
         var table = layui.table;
         var layer = layui.layer;
@@ -64,6 +65,7 @@
             elem: '#role-table',
             url: 'system/role/list',
             page: false,
+            method: 'post',
             cols: [
                 [
                     {type: 'numbers'},

@@ -41,6 +41,7 @@
 
 <script>
     layui.use(['form', 'table', 'util', 'admin', 'element'], function () {
+        var $ = layui.$;
         var form = layui.form;
         var table = layui.table;
         var layer = layui.layer;
@@ -54,6 +55,7 @@
         table.render({
             elem: '#user-table',
             url: 'system/user/list',
+            method: 'post',
             page: true,
             cols: [
                 [

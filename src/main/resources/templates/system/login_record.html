@@ -22,6 +22,7 @@
 
 <script>
     layui.use(['laydate', 'table', 'util'], function () {
+        var $ = layui.$;
         var laydate = layui.laydate;
         var table = layui.table;
         var util = layui.util;
@@ -31,6 +32,7 @@
             elem: '#logr-table',
             url: 'system/loginRecord/list',
             page: true,
+            method: 'post',
             cols: [
                 [
                     {type: 'numbers'},
