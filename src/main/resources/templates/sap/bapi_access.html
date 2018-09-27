@@ -12,7 +12,7 @@
         <input id="bapiName" th:value="${bapiName}" hidden/>
 
         <div class="layui-card-header">
-            <h2 class="header-title" th:text="${bapiName}"></h2>
+            <h class="header-title" th:text="${bapiName}"></h>
             <span class="layui-breadcrumb pull-right">
                 <button id="bapi-btn-access" class="layui-btn layui-btn-normal layui-btn-xs"><i class="layui-icon">&#xe615;</i>Run</button>
             </span>
@@ -51,7 +51,7 @@
 
 <script>
     layui.use(['table', 'treetable', 'form', 'util', 'admin', 'element'], function () {
-
+        var $ = layui.$;
         var layer = layui.layer;
         var table = layui.table;
         var treetable = layui.treetable;
@@ -64,14 +64,9 @@
         import_container = document.getElementById('import_jsoneditor');
         export_container = document.getElementById('export_jsoneditor');
 
-        import_json = {
-            "bapiName":"ZMM_MSEG_ETL",
-            "inParams": {
-                "I_FROMDATE":"2018-08-15 00:00:00",
-                "I_TODATE":"2018-09-04 00:00:00"},
-            "outTablesNames": ["T_MSEG"]
-        };
-
+        // 输入数据
+        import_json = {};
+        // 输出数据
         export_json = {};
 
         import_options = {
@@ -145,13 +140,11 @@
                 layer.closeAll('loading');
                 if (res.code == 200) {
 
-                    var importData = res.data.import;
-                    var exportData = res.data.export;
-                    var tableData = res.data.tables;
+                    var importDatas = res.data.import;
+                    var exportDatas = res.data.export;
+                    var tableDatas = res.data.tables;
 
-                    console.log(importData);
-                    console.log(exportData);
-                    console.log(tableData);
+                    setImport_json(importDatas, exportDatas, tableDatas);
 
                     // 输入参数
                     treetable.render({
@@ -162,7 +155,7 @@
                         treeDefaultClose: true,
                         treeLinkage: false,
                         elem: '#bapi-importParams-table',
-                        data: importData,
+                        data: importDatas,
                         page: false,
                         size: 'sm',
                         cols: [
@@ -171,6 +164,9 @@
                                 {align: 'left', field: 'fieldName', title: '栏位'},
                                 {align: 'center', field: 'description', title: '描述'},
                                 {align: 'center', field: 'dafault', title: '默认'},
+                                {align: 'center', field: 'isImport', title: '输入'},
+                                {align: 'center', field: 'isStructure', title: '结构体'},
+                                {align: 'center', field: 'isTable', title: '内表'},
                                 {align: 'center', field: 'isOptional', title: '必须', width: 60},
                                 {align: 'center', field: 'type', title: '类型'},
                                 {align: 'center', field: 'classNameOfField', title: 'Java'}
@@ -187,7 +183,7 @@
                         treeDefaultClose: true,
                         treeLinkage: false,
                         elem: '#bapi-exportParams-table',
-                        data: exportData,
+                        data: exportDatas,
                         page: false,
                         size: 'sm',
                         cols: [
@@ -196,6 +192,9 @@
                                 {align: 'left', field: 'fieldName', title: '栏位'},
                                 {align: 'center', field: 'description', title: '描述'},
                                 {align: 'center', field: 'dafault', title: '缺省值'},
+                                {align: 'center', field: 'isImport', title: '输入'},
+                                {align: 'center', field: 'isStructure', title: '结构体'},
+                                {align: 'center', field: 'isTable', title: '内表'},
                                 {align: 'center', field: 'isOptional', title: '必须', width: 60},
                                 {align: 'center', field: 'type', title: '类型'},
                                 {align: 'center', field: 'classNameOfField', title: 'Java'}
@@ -212,7 +211,7 @@
                         treeDefaultClose: true,
                         treeLinkage: false,
                         elem: '#bapi-tableParams-table',
-                        data: tableData,
+                        data: tableDatas,
                         page: false,
                         size: 'sm',
                         cols: [
@@ -221,6 +220,9 @@
                                 {align: 'left', field: 'fieldName', title: '栏位'},
                                 {align: 'center', field: 'description', title: '描述'},
                                 {align: 'center', field: 'dafault', title: '缺省值'},
+                                {align: 'center', field: 'isImport', title: '输入'},
+                                {align: 'center', field: 'isStructure', title: '结构体'},
+                                {align: 'center', field: 'isTable', title: '内表'},
                                 {align: 'center', field: 'isOptional', title: '必须', width: 60},
                                 {align: 'center', field: 'type', title: '类型'},
                                 {align: 'center', field: 'classNameOfField', title: 'Java'}
@@ -233,6 +235,61 @@
                 }
 
             });
+        };
+
+        // 设置import_json
+        var setImport_json = function(importMetaDatas, exportMetaDatas, tableMetaDatas) {
+
+            var inParams = {};
+            var inStructures = {};
+            var inTables = {};
+            var outParamsNames = new Array();
+            var outStructuresNames = new Array();
+            var outTablesNames = new Array();
+
+            for (var i = 0; i<importMetaDatas.length; i++){
+                var importMetaData = importMetaDatas[i];
+
+                if(importMetaData.isStructure == false) {
+                    inParams[importMetaData.fieldName] = importMetaData.dafault;
+                } else {
+                    inStructures[importMetaData.fieldName] = {};
+                }
+            }
+
+            for (var i = 0; i<exportMetaDatas.length; i++) {
+                var exportMetaData = exportMetaDatas[i];
+
+                if(exportMetaData.isStructure == false) {
+                    outParamsNames.push(exportMetaData.fieldName);
+                } else {
+                    outStructuresNames.push(exportMetaData.fieldName);
+                }
+            }
+
+            for (var i = 0; i<tableMetaDatas.length; i++) {
+                var tableMetaData = tableMetaDatas[i];
+
+                if(tableMetaData.isTable != true) {
+                    continue;
+                }
+                if(tableMetaData.isImport == true) {
+                    inTables[tableMetaData.fieldName] = new Array();
+                } else {
+                    outTablesNames.push(tableMetaData.fieldName);
+                }
+            }
+
+
+            import_json["bapiName"] =  $("#bapiName").val();
+            import_json["inParams"] = inParams;
+            import_json["inStructures"] = inStructures;
+            import_json["inTables"] = inTables;
+            import_json["outParamsNames"] = outParamsNames;
+            import_json["outStructuresNames"] = outStructuresNames;
+            import_json["outTablesNames"] = outTablesNames;
+
+            import_editor.update(import_json);
         };
 
         renderTable($("#bapiName").val());

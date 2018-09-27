@@ -324,6 +324,8 @@ abstract class AbstractRfc implements RfcCaller {
             boolean isStructure = jCoListMetaData.isTable(fieldName);
             boolean isTable = jCoListMetaData.isTable(fieldName);
 
+            boolean isImport = jCoListMetaData.isImport(fieldName);
+
             Map map = new HashMap();
             map.put("indexOf", indexOf);
             map.put("fieldName", fieldName);
@@ -333,6 +335,9 @@ abstract class AbstractRfc implements RfcCaller {
             map.put("type", type);
             map.put("classNameOfField", classNameOfField);
             map.put("pname", pname);
+            map.put("isImport", isImport);
+            map.put("isStructure", isStructure);
+            map.put("isTable", isTable);
 
             // 判断是否是结构体或内表，是则继续解析JCoRecordMetaData
             if(isStructure || isTable) {

@@ -112,4 +112,17 @@ public interface BapiCaller {
      * @throws JCoException
      */
     Map getBapiInfo(String bapiName) throws JCoException;
+
+    /**
+     * 记录bapi的调用历史
+     * @param bapiName
+     * @param isSuccess
+     * @param ip
+     * @param os
+     * @param device
+     * @param browser
+     * @param timeConsuming 
+     */
+    void recordrBapiUsage(String bapiName, boolean isSuccess, String ip, String os, String device, String browser,
+                          String timeConsuming);
 }

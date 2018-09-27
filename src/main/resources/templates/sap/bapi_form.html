@@ -15,6 +15,9 @@
                 <option value="">--请选择--</option>
                 <option value="MM">采购</option>
                 <option value="PP">物流</option>
+                <option value="PR">PR</option>
+                <option value="PO">PO</option>
+                <option value="PA">PA</option>
             </select>
         </div>
     </div>
@@ -39,6 +42,7 @@
 
 <script>
     layui.use(['form', 'admin'], function () {
+        var $ = layui.$;
         var layer = layui.layer;
         var form = layui.form;
         var admin = layui.admin;

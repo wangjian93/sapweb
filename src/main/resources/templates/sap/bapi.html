@@ -32,6 +32,7 @@
 
 <script>
     layui.use(['form', 'table', 'util', 'admin', 'element'], function () {
+        var $ = layui.$;
         var form = layui.form;
         var table = layui.table;
         var layer = layui.layer;
@@ -43,6 +44,7 @@
         table.render({
             elem: '#bapi-table',
             url: 'sap/bapi/list',
+            method:'post',
             page: true,
             cols: [
                 [
@@ -111,15 +113,15 @@
         // 显示访问Bapi界面
         var showAccessModel = function (bapiName) {
             var url = 'sap/bapi/access?bapiName=' + bapiName;
-            // // iframe层
-            //var url = "https://www.layui.com/demo/table/auto.html";
+
             layer.open({
-                type : 2,
-                title : '访问Bapi',
-                maxmin : true,
-                shadeClose : false, // 点击遮罩关闭层
-                area: ['800px', '520px'],
-                content : url
+                type: 2 //Page层类型
+                ,area: ['893px', '600px']
+                ,title: '欢迎访问Bapi'
+                ,shade: 0.6 //遮罩透明度
+                ,maxmin: true //允许全屏最小化
+                ,anim: 0 //0-6的动画形式，-1不开启
+                ,content: url
             });
         };
 
