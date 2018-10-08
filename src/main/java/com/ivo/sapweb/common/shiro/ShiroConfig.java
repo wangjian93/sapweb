@@ -48,6 +48,7 @@ public class ShiroConfig {
         filterChainDefinitions.put("/module/**", "anon");
         filterChainDefinitions.put("/api/**", "anon");
         filterChainDefinitions.put("/druid/**", "anon");
+        filterChainDefinitions.put("/sap/callBapi/**", "anon");
         filterChainDefinitions.put("/login", "anon");
         filterChainDefinitions.put("/logout", "logout");
         filterChainDefinitions.put("/**", "myLoginFilter,authc");
