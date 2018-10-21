@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ivo.sapweb.sap.dao.BapiRecordMapper">
+
+    <select id="list" resultType="com.ivo.sapweb.sap.model.BapiRecord">
+        SELECT r.*, b.bapi_Name
+        FROM sap_bapi_record r
+        left join sap_bapi b on r.bapi_Id=b.bapi_id
+        <where>
+            AND r.is_Valid = 1
+            <if test="bapiName != null">
+                AND b.bapi_Name like #{bapiName}
+            </if>
+        </where>
+        ORDER BY r.id DESC
+    </select>
 </mapper>

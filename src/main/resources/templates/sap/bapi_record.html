@@ -1,0 +1,47 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h2 class="header-title">BAPI使用记录</h2>
+        <span class="layui-breadcrumb pull-right">
+            <a href="#!home_console">首页</a>
+            <a><cite>BAPI使用记录</cite></a>
+        </span>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-form toolbar">
+            搜索：
+            <select id="bapirecord-search-key">
+                <option value="">--请选择--</option>
+                <option value="bapi_name">BAPI名称</option>
+            </select>
+            <input id="bapirecord-search-value" class="layui-input search-input" type="text" placeholder="请输入关键字"/>&emsp;
+            <button id="bapirecord-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+        </div>
+        <table class="layui-table" id="bapirecord-table" lay-filter="bapirecord-table"></table>
+    </div>
+</div>
+
+<script>
+    layui.use(['table'], function () {
+
+        var table = layui.table;
+
+        //渲染表格
+        table.render({
+            elem: '#bapirecord-table',
+            url: 'sap/bapiRecord/list',
+            method: 'post',
+            page: true,
+            cols: [
+                [
+                    {align: 'center', field: 'bapiName', title: 'bapiName'},
+                    {align: 'center', field: 'success', title: '成功'},
+                    {align: 'center', field: 'ip', title: 'ip'},
+                    {align: 'center', field: 'os', title: '系统'} ,
+                    {align: 'center', field: 'browser', title: '浏览器'},
+                    {align: 'center', field: 'timeConsuming', title: '耗时'}
+                ]
+            ]
+        });
+
+    });
+</script>

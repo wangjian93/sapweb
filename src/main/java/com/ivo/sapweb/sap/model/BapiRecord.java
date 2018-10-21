@@ -1,5 +1,6 @@
 package com.ivo.sapweb.sap.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.ivo.sapweb.common.core.Model;
@@ -52,6 +53,17 @@ public class BapiRecord extends Model {
      * 耗时
      */
     String timeConsuming;
+
+    @TableField(exist = false)
+    String bapiName;
+
+    public String getBapiName() {
+        return bapiName;
+    }
+
+    public void setBapiName(String bapiName) {
+        this.bapiName = bapiName;
+    }
 
     public Integer getId() {
         return id;
