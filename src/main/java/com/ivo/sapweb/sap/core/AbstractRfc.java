@@ -62,16 +62,19 @@ abstract class AbstractRfc implements RfcCaller {
             if(!jCoListMetaData.isStructure(i)) {
                 continue;
             }
+
             String fieldName = jCoListMetaData.getName(i);
+            // 判断该结构体是否需要上传数据，不用就跳过
+            if(map.get(fieldName) == null) {
+
+            }
+
             // 获取结构体JCoStructure
             JCoStructure jCoStructure = jCoParameterList.getStructure(fieldName);
             // 获取结构体的JCoRecordMetaData
             JCoRecordMetaData jCoRecordMetaData = jCoStructure.getRecordMetaData();
 
             Map recordMap = map.get(fieldName);
-            if(recordMap == null) {
-                continue;
-            }
 
             // 遍历JCoRecordMetaData，获取结构体的参数
             int count = jCoRecordMetaData.getFieldCount();
@@ -103,20 +106,19 @@ abstract class AbstractRfc implements RfcCaller {
 
         // 遍历JCoListMetaData，获取内表
         for(int i=0; i<jCoListMetaData.getFieldCount(); i++) {
-            // 判断内表类型是import还是export，是export型的跳过
-            if(!jCoListMetaData.isImport(i)) {
+
+            // 判断该内表是否需要上传数据，不用就跳过
+            String fieldName = jCoListMetaData.getName(i);
+            if(map.get(fieldName) == null) {
                 continue;
             }
-            String fieldName = jCoListMetaData.getName(i);
+
             // 获取内表JCoTable
             JCoTable jCoTable = jCoParameterList.getTable(fieldName);
             // 获取内表的JCoRecordMetaData
             JCoRecordMetaData jCoRecordMetaData = jCoTable.getRecordMetaData();
 
             List<Map<String, Object>> tableList = map.get(fieldName);
-            if(tableList == null) {
-                continue;
-            }
 
             // 遍历recordMap，传入内表的每条数据
             for(Map<String, Object> recordMap : tableList) {
@@ -124,7 +126,7 @@ abstract class AbstractRfc implements RfcCaller {
 
                 // 遍历jCoRecordMetaData，获取内表的参数
                 for(int j=0; j<jCoRecordMetaData.getFieldCount(); j++) {
-                    String recorddName = jCoRecordMetaData.getName(i);
+                    String recorddName = jCoRecordMetaData.getName(j);
                     Object value = recordMap.get(recorddName);
                     if(value == null) {
                         continue;
