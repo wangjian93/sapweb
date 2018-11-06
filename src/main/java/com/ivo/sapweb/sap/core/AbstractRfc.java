@@ -66,7 +66,7 @@ abstract class AbstractRfc implements RfcCaller {
             String fieldName = jCoListMetaData.getName(i);
             // 判断该结构体是否需要上传数据，不用就跳过
             if(map.get(fieldName) == null) {
-
+                continue;
             }
 
             // 获取结构体JCoStructure
