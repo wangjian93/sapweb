@@ -1,10 +1,13 @@
 package com.ivo.sapweb.sap.core;
 
+import com.ivo.sapweb.SapwebApplication;
 import com.sap.conn.jco.JCoDestination;
 import com.sap.conn.jco.JCoDestinationManager;
 import com.sap.conn.jco.JCoException;
 import com.sap.conn.jco.ext.DestinationDataProvider;
 import com.sap.conn.jco.ext.Environment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.InputStream;
@@ -17,6 +20,11 @@ import java.util.Properties;
  * @date 2018/8/12
  */
 public class SapConnectionPool {
+
+    private final static Logger logger = LoggerFactory.getLogger(SapwebApplication.class);
+
+    /** 运行环境 **/
+    public static String env = "pro";
 
     /** 连接属性配置文件名，名称可以随便取 */
     private static final String SAP_CONN="SAP_CONN";
@@ -31,10 +39,27 @@ public class SapConnectionPool {
             JCoDestination dest = JCoDestinationManager.getDestination(SAP_CONN);
             return dest;
         } catch (JCoException ex) {
-            System.out.println("重新建立SAP连接池!");
+            logger.error("SAP获取连接失败", ex);
+            logger.info("重新建立SAP连接池!");
             //重新连接
             return RegetJocodestination();
         }
+    }
+
+    /**
+     * 设置运行环境
+     * @param env
+     */
+    public static void setEnv(String env) {
+        SapConnectionPool.env = env;
+    }
+
+    /**
+     * 根据运行环境获取sap连接配置
+     */
+    public static ClassPathResource getResource() {
+        String resourceName = "SAPConnectionPool_" + env + ".properties";
+        return new ClassPathResource(resourceName);
     }
 
     /**
@@ -43,13 +68,17 @@ public class SapConnectionPool {
      */
     public static JCoDestination RegetJocodestination(){
         try{
+
             //读取properFile
+            ClassPathResource classPathResource = getResource();
+            logger.info("加载SAP连接池配置文件: " + classPathResource.getFilename());
+
             Properties properFile = new Properties();
-            ClassPathResource classPathResource = new ClassPathResource("SAPConnectionPool.properties");
             InputStream inputStream = classPathResource.getInputStream();
             properFile.load(inputStream);
             inputStream.close();
 
+            logger.info("建立连接池...");
             //设置jco连接变量信息
             Properties connectProperties = new Properties();
             connectProperties.setProperty(DestinationDataProvider.JCO_ASHOST, properFile.getProperty("jco.client.ashost"));
@@ -72,13 +101,20 @@ public class SapConnectionPool {
             Environment.registerDestinationDataProvider(provider);
             try {
                 JCoDestination dest = JCoDestinationManager.getDestination(SAP_CONN);
+
+                logger.info("连接池连接信息:");
+                logger.info("ApplicationServerHost: " + dest.getApplicationServerHost());
+                logger.info("GatewayHost: " + dest.getGatewayHost());
+                logger.info("TPHost: " + dest.getTPHost());
+                logger.info("MessageServerHost: " + dest.getMessageServerHost());
+
                 return dest;
             } catch (JCoException ex) {
-                System.out.println(ex);
-                System.out.println("重新连接失败");
+                logger.error("SAP重新连接失败", ex);
             }
+            logger.info("SAP连接池创建完成");
         }catch(Exception e){
-            e.printStackTrace();
+            logger.error("SAP连接池创建失败:", e);
         }
         return null;
     }

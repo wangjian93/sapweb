@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:mysql://10.20.2.9:3306/aab?useUnicode=true&characterEncoding=utf8
-    username: test
-    password: test
-    driver-class-name: com.mysql.jdbc.Driver

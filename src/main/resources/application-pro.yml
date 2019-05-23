@@ -1,0 +1,10 @@
+server:
+  ## 端口
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://10.20.2.53:3306/sapweb?useUnicode=true&characterEncoding=utf8
+    username: ivosapweb
+    password: ivosapweb3
+    driver-class-name: com.mysql.jdbc.Driver

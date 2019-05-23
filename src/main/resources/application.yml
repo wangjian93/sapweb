@@ -1,11 +1,7 @@
-server:
-  ## 端口
-  port: 8080
-
 spring:
   ## 多环境配置
   profiles:
-    active: dev
+    active: pro
 
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
