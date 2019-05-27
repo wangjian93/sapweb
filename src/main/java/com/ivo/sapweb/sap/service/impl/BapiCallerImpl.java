@@ -9,9 +9,12 @@ import com.ivo.sapweb.sap.model.Bapi;
 import com.ivo.sapweb.sap.model.BapiRecord;
 import com.ivo.sapweb.sap.service.BapiCaller;
 import com.sap.conn.jco.JCoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +25,8 @@ import java.util.Map;
  */
 @Service
 public class BapiCallerImpl implements BapiCaller {
+
+    private final static Logger logger = LoggerFactory.getLogger(BapiCallerImpl.class);
 
     @Autowired
     private DefaultRfc defaultRfc;
@@ -108,8 +113,12 @@ public class BapiCallerImpl implements BapiCaller {
     @Override
     public void recordrBapiUsage(String bapiName, boolean isSuccess, String ip, String os, String device, String browser,
                                  String timeConsuming) {
-        try {
+        recordrBapiUsage(bapiName, isSuccess, ip, os, device, browser, timeConsuming, null);
+    }
 
+    @Override
+    public void recordrBapiUsage(String bapiName, boolean isSuccess, String ip, String os, String device, String browser, String timeConsuming, String message) {
+        try {
             Wrapper<Bapi> wrapper = new EntityWrapper<>();
             wrapper.eq("bapi_Name", bapiName);
             wrapper.eq("is_Valid", 1);
@@ -128,10 +137,13 @@ public class BapiCallerImpl implements BapiCaller {
             bapiRecord.setDevice(device);
             bapiRecord.setBrowser(browser);
             bapiRecord.setTimeConsuming(timeConsuming);
-
+            bapiRecord.setCreateTime(new Date());
+            bapiRecord.setUpdateTime(new Date());
+            bapiRecord.setDate(new Date());
+            bapiRecord.setError(message);
             bapiRecordMapper.insert(bapiRecord);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("BapiRecord保存失败，" + bapiName, e);
             // 这里只做记录，不干涉业务，由此引发的所有异常捕获不作处理
             return;
         }

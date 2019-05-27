@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.ivo.sapweb.common.core.Model;
 
+import java.util.Date;
+
 /**
  * bapi的使用记录
  * @author wangjian
@@ -53,6 +55,16 @@ public class BapiRecord extends Model {
      * 耗时
      */
     String timeConsuming;
+
+    /**
+     * 访问时间
+     */
+    Date date;
+
+    /**
+     * 错误信息
+     */
+    String error;
 
     @TableField(exist = false)
     String bapiName;
@@ -127,5 +139,21 @@ public class BapiRecord extends Model {
 
     public void setTimeConsuming(String timeConsuming) {
         this.timeConsuming = timeConsuming;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }

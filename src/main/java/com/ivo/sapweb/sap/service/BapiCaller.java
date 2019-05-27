@@ -125,4 +125,7 @@ public interface BapiCaller {
      */
     void recordrBapiUsage(String bapiName, boolean isSuccess, String ip, String os, String device, String browser,
                           String timeConsuming);
+
+    void recordrBapiUsage(String bapiName, boolean isSuccess, String ip, String os, String device, String browser,
+                          String timeConsuming, String message);
 }

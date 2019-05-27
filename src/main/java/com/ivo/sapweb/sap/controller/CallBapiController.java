@@ -9,6 +9,8 @@ import com.ivo.sapweb.common.util.UserAgentGetter;
 import com.ivo.sapweb.sap.service.BapiCaller;
 import com.sap.conn.jco.JCoException;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/sap/callBapi")
 public class CallBapiController {
+
+    private final static Logger logger = LoggerFactory.getLogger(CallBapiController.class);
 
     @Autowired
     private BapiCaller bapiCaller;
@@ -96,14 +100,19 @@ public class CallBapiController {
             // 记录bapi的调用历史
             bapiCaller.recordrBapiUsage(bapiName, true, ip, os, device, browser, timeConsuming);
 
+            logger.info("BAPI调用成功，" + bapiName + "，耗时" + timeConsuming + "ms，" + "IP " + ip);
+
             return JsonResult.ok().put("data", map);
         } catch (JCoException e) {
 
             long endTime = System.currentTimeMillis();
             String timeConsuming = (endTime - startTime) + "ms";
 
-            bapiCaller.recordrBapiUsage(bapiName, false, ip, os, device, browser, timeConsuming);
-            e.printStackTrace();
+            bapiCaller.recordrBapiUsage(bapiName, false, ip, os, device, browser, timeConsuming,
+                    e.getMessage().substring(0, 200));
+
+            logger.error("BAPI调用失败，" + bapiName + "，耗时" + timeConsuming + "ms，" + "IP " + ip, e);
+
             return JsonResult.error(e.getMessage());
         }
     }

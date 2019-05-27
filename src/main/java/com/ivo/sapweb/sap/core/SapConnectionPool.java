@@ -1,6 +1,5 @@
 package com.ivo.sapweb.sap.core;
 
-import com.ivo.sapweb.SapwebApplication;
 import com.sap.conn.jco.JCoDestination;
 import com.sap.conn.jco.JCoDestinationManager;
 import com.sap.conn.jco.JCoException;
@@ -21,7 +20,7 @@ import java.util.Properties;
  */
 public class SapConnectionPool {
 
-    private final static Logger logger = LoggerFactory.getLogger(SapwebApplication.class);
+    private final static Logger logger = LoggerFactory.getLogger(SapConnectionPool.class);
 
     /** 运行环境 **/
     public static String env = "pro";
