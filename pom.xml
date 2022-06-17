@@ -112,7 +112,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.47</version>
+            <version>1.2.83</version>
         </dependency>
 
         <!-- 将/resources/sapjco下的saojco3.jar添加到环境中,编译可以,打包时不会加到lib中 -->
